@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Análise Motor Com Pausa — Olsen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f5f7;
+  --bg2:#ffffff;
+  --bg3:#eef0f3;
+  --sur:#ffffff;
+  --sur2:#f4f5f7;
+  --brd:#e2e5ea;
+  --brd2:#cdd1d9;
+  --txt:#1a1d23;
+  --txt2:#4b5263;
+  --txt3:#8c93a3;
+  --acc:#2563eb;
+  --acc2:#1d4ed8;
+  --grn:#16a34a;
+  --amb:#d97706;
+  --red:#dc2626;
+  --pur:#7c3aed;
+  --cya:#0891b2;
+  --r:6px;--rl:10px;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',sans-serif;
+}
+body{background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:14px;line-height:1.5;min-height:100vh}
+
+/* ── HEADER ── */
+header{
+  background:var(--bg2);
+  border-bottom:1px solid var(--brd);
+  padding:0 32px;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.hlogo{display:flex;align-items:center;gap:16px}
+.hdivider{width:1px;height:36px;background:var(--brd2)}
+.htitle{font-size:13px;font-weight:600;color:var(--txt);letter-spacing:.01em}
+.hsub{font-size:10px;color:var(--txt3);letter-spacing:.08em;text-transform:uppercase;margin-top:2px;font-family:var(--mono)}
+.hright{display:flex;align-items:center;gap:12px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--grn);box-shadow:0 0 5px #16a34a88;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.live-label{font-size:10px;color:var(--txt3);font-family:var(--mono)}
+.btn{
+  display:flex;align-items:center;gap:6px;
+  background:var(--sur2);border:1px solid var(--brd2);border-radius:var(--r);
+  color:var(--txt2);font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:.08em;padding:6px 14px;cursor:pointer;
+  transition:all .15s;
+}
+.btn:hover{background:var(--brd2);color:var(--txt);border-color:var(--txt3)}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.8}
+.btn.spin svg{animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+/* ── TABS ── */
+nav{
+  background:var(--bg2);border-bottom:1px solid var(--brd);
+  padding:0 32px;display:flex;overflow-x:auto;
+  scrollbar-width:none;
+}
+nav::-webkit-scrollbar{display:none}
+.tab{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:14px 16px;cursor:pointer;color:var(--txt3);
+  border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;
+}
+.tab:hover{color:var(--txt2)}
+.tab.active{color:var(--acc);border-bottom-color:var(--acc)}
+
+/* ── PAGES ── */
+.page{display:none;padding:28px 32px;max-width:1440px;margin:0 auto}
+.page.active{display:block}
+
+/* ── SECTION LABEL ── */
+.slabel{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.slabel-text{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--txt3);white-space:nowrap}
+.slabel::after{content:'';flex:1;height:1px;background:var(--brd)}
+section{margin-bottom:32px}
+
+/* ── KPI GRID ── */
+.kpi-grid{display:grid;gap:1px;background:var(--brd);border:1px solid var(--brd);border-radius:var(--rl);overflow:hidden}
+.kpi-grid-5{grid-template-columns:repeat(5,1fr)}
+.kpi-grid-6{grid-template-columns:repeat(6,1fr)}
+.kpi-grid-7{grid-template-columns:repeat(7,1fr)}
+.kpi-grid-8{grid-template-columns:repeat(8,1fr)}
+.kpi{background:var(--sur);padding:18px 16px;transition:background .15s}
+.kpi:hover{background:var(--sur2)}
+.kpi-lbl{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3);margin-bottom:8px}
+.kpi-val{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--txt);line-height:1}
+.kpi-unit{font-size:11px;color:var(--txt3);margin-left:2px;font-weight:400}
+.kpi-sub{font-family:var(--mono);font-size:9px;color:var(--txt3);margin-top:5px}
+
+/* ── CARDS ── */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(460px,1fr));gap:14px}
+.cgrid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.cc{background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);padding:20px 22px 16px}
+.ctitle{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--txt);margin-bottom:3px}
+.csub{font-family:var(--mono);font-size:9px;color:var(--txt3);margin-bottom:14px;letter-spacing:.04em;line-height:1.6}
+.cwrap{height:240px;position:relative}
+.cwrap-lg{height:300px;position:relative}
+.cwrap-xl{height:360px;position:relative}
+
+/* ── SETUP BAR ── */
+.setup-bar{
+  background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);
+  padding:14px 22px;display:flex;align-items:center;gap:28px;flex-wrap:wrap;
+}
+.setup-item-lbl{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);margin-bottom:3px}
+.setup-item-val{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--txt)}
+.setup-divider{width:1px;height:32px;background:var(--brd2)}
+
+/* ── CONTROLS ── */
+.ctrl-row{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.ctrl-label{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--txt3);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+select{
+  font-family:var(--mono);font-size:11px;
+  background:var(--sur2);border:1px solid var(--brd2);border-radius:var(--r);
+  color:var(--txt);padding:5px 10px;cursor:pointer;outline:none;
+}
+select:focus{border-color:var(--acc)}
+select option{background:var(--bg3)}
+
+/* ── BADGES ── */
+.badge{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.06em;padding:3px 9px;border-radius:4px;border:1px solid;white-space:nowrap}
+.badge-blu{background:#dbeafe;border-color:#93c5fd;color:#1d4ed8}
+.badge-grn{background:#dcfce7;border-color:#86efac;color:#15803d}
+.badge-amb{background:#fef3c7;border-color:#fcd34d;color:#92400e}
+.badge-pur{background:#f3e8ff;border-color:#d8b4fe;color:#6d28d9}
+.badge-cya{background:#cffafe;border-color:#67e8f9;color:#0e7490}
+.badge-red{background:#fee2e2;border-color:#fca5a5;color:#b91c1c}
+
+/* ── PAUSA BLOCK (cores únicas por minuto) ── */
+.pausa-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
+.pausa-slot{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);padding:12px 14px}
+.pausa-slot-title{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.min1{color:#2563eb}.min2{color:#16a34a}.min3{color:#d97706}.min4{color:#7c3aed}.min5{color:#0891b2}
+
+/* ── COMPARADOR ── */
+.cmp-selects{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.cmp-slot{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);padding:12px 14px}
+.cmp-slot-title{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);margin-bottom:6px}
+
+/* ── TABLE ── */
+.tcard{background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);overflow:hidden}
+.twrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+thead{background:var(--bg3);border-bottom:1px solid var(--brd)}
+th{text-align:left;padding:10px 12px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--brd);font-family:var(--mono);color:var(--txt3);white-space:nowrap;font-size:11px}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--bg3);color:var(--txt)}
+td.hi{color:var(--txt);font-weight:600}
+td.acc{color:var(--acc);font-weight:600}
+td.grn{color:var(--grn)}
+td.amb{color:var(--amb)}
+
+/* ── LOADING / EMPTY ── */
+.sbox{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:10px;color:var(--txt3);font-family:var(--mono);font-size:11px}
+.spinner{width:18px;height:18px;border:1.5px solid var(--brd2);border-top-color:var(--acc);border-radius:50%;animation:rot .7s linear infinite}
+
+/* ── INFO TOTAL ── */
+.info-total{
+  background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);
+  padding:14px 22px;display:flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:11px;color:var(--txt3);flex-wrap:wrap;
+}
+.info-total strong{color:var(--txt);font-weight:600}
+
+/* ── PAUSA LEGEND ── */
+.legend-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+.legend-item{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;color:var(--txt3)}
+.legend-dot{width:10px;height:10px;border-radius:50%}
+
+footer{text-align:center;padding:16px 32px;font-family:var(--mono);font-size:9px;color:var(--txt3);border-top:1px solid var(--brd);letter-spacing:.08em}
+
+@media(max-width:900px){
+  .page{padding:16px}.kpi-grid-5,.kpi-grid-6,.kpi-grid-7,.kpi-grid-8{grid-template-columns:1fr 1fr}
+  .cgrid,.cgrid-3,.cmp-selects,.pausa-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hlogo">
+    <div style="display:flex;flex-direction:column;line-height:1">
+      <span style="font-family:var(--mono);font-size:18px;font-weight:600;color:var(--txt);letter-spacing:.05em">OLSEN</span>
+      <span style="font-family:var(--mono);font-size:8px;color:var(--txt3);letter-spacing:.2em">ELETRÔNICA</span>
+    </div>
+    <div class="hdivider"></div>
+    <div>
+      <div class="htitle">Análise Motor — Ciclo com Pausa de 5 min</div>
+      <div class="hsub">Monitoramento Contínuo · Teste de Durabilidade</div>
+    </div>
+  </div>
+  <div class="hright">
+    <div class="live-dot"></div>
+    <span class="live-label" id="lu">—</span>
+    <button class="btn" id="btnR" onclick="loadData()">
+      <svg viewBox="0 0 16 16"><path d="M14 2v4h-4M2 14v-4h4"/><path d="M2.5 9A6 6 0 1113.5 9"/></svg>
+      ATUALIZAR
+    </button>
+  </div>
+</header>
+
+<nav>
+  <div class="tab active" onclick="goTab('resumo',this)">RESUMO</div>
+  <div class="tab" onclick="goTab('perfil',this)">PERFIL DE CORRENTE</div>
+  <div class="tab" onclick="goTab('pausa',this)">PAUSA 5 MIN</div>
+  <div class="tab" onclick="goTab('tendencia',this)">TENDÊNCIA</div>
+  <div class="tab" onclick="goTab('comparador',this)">COMPARADOR</div>
+  <div class="tab" onclick="goTab('tempo',this)">TEMPO DE CICLO</div>
+</nav>
+
+<!-- ══════════════════════ RESUMO ══════════════════════ -->
+<div class="page active" id="p-resumo">
+  <section>
+    <div class="slabel"><span class="slabel-text">métricas gerais</span></div>
+    <div class="kpi-grid kpi-grid-5" id="kpiGrid">
+      <div class="sbox"><div class="spinner"></div><span>carregando...</span></div>
+    </div>
+  </section>
+  <section>
+    <div class="slabel"><span class="slabel-text">configuração do ensaio</span></div>
+    <div class="setup-bar" id="setupBar"><span style="color:var(--txt3);font-family:var(--mono);font-size:11px">Carregando...</span></div>
+  </section>
+  <section>
+    <div class="slabel"><span class="slabel-text">últimas 15 leituras</span></div>
+    <div class="tcard"><div class="twrap" id="tableBox"></div></div>
+  </section>
+</div>
+
+<!-- ══════════════════════ PERFIL ══════════════════════ -->
+<div class="page" id="p-perfil">
+  <section>
+    <div class="slabel"><span class="slabel-text">perfil de corrente — ciclo completo</span></div>
+    <div class="cc">
+      <div class="ctrl-row">
+        <span class="ctrl-label">Ciclo:</span>
+        <select id="selCiclo" onchange="renderPerfil()"></select>
+        <span class="badge badge-blu">100 amostras ↑ subindo</span>
+        <span class="badge badge-amb">50 amostras ⏸ pausa (5×10)</span>
+        <span class="badge badge-grn">10 amostras ↓ descendo</span>
+      </div>
+      <div class="ctitle" id="perfilTitle">—</div>
+      <div class="csub">Corrente ao longo do ciclo completo — Subida (S1..S100) · Pausa 5 min (M1..M5 × 10 amostras) · Descida (D1..D10) · 160 amostras totais</div>
+      <div class="cwrap-xl"><canvas id="cPerfil"></canvas></div>
+    </div>
+  </section>
+  <section>
+    <div class="slabel"><span class="slabel-text">estatísticas do ciclo selecionado</span></div>
+    <div class="kpi-grid kpi-grid-8" id="perfilStats">
+      <div class="sbox"><span>selecione um ciclo</span></div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════ PAUSA 5 MIN ══════════════════════ -->
+<div class="page" id="p-pausa">
+  <section>
+    <div class="slabel"><span class="slabel-text">corrente durante pausa — 5 minutos no fim de curso</span></div>
+    <div class="cc">
+      <div class="ctrl-row">
+        <span class="ctrl-label">Ciclo:</span>
+        <select id="selPausa" onchange="renderPausa()"></select>
+        <span class="badge badge-blu">MIN 1</span>
+        <span class="badge badge-grn">MIN 2</span>
+        <span class="badge badge-amb">MIN 3</span>
+        <span class="badge badge-pur">MIN 4</span>
+        <span class="badge badge-cya">MIN 5</span>
+      </div>
+      <div class="ctitle" id="pausaTitle">—</div>
+      <div class="csub">10 amostras de corrente por minuto — monitoramento de descida indesejada na posição fim de curso</div>
+      <div class="cwrap-xl"><canvas id="cPausa"></canvas></div>
+    </div>
+  </section>
+  <section>
+    <div class="slabel"><span class="slabel-text">estatísticas de pausa por minuto</span></div>
+    <div class="pausa-grid" id="pausaStats">
+      <div class="sbox"><span>selecione um ciclo</span></div>
+    </div>
+  </section>
+  <section>
+    <div class="slabel"><span class="slabel-text">tendência da corrente de pausa ao longo dos ciclos</span></div>
+    <div class="cgrid">
+      <div class="cc">
+        <div class="ctitle">Corrente Média por Minuto — Todos os Ciclos</div>
+        <div class="csub">Evolução da média de cada minuto de pausa ao longo do ensaio · tendência crescente pode indicar descida do assento</div>
+        <div class="cwrap-lg"><canvas id="cPausaTend"></canvas></div>
+      </div>
+      <div class="cc">
+        <div class="ctitle">Corrente Máxima de Pausa por Ciclo</div>
+        <div class="csub">Pico de corrente em qualquer dos 5 minutos · detecta movimentação indesejada</div>
+        <div class="cwrap-lg"><canvas id="cPausaPico"></canvas></div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="slabel"><span class="slabel-text">evolução minuto a minuto — comparativo entre ciclos</span></div>
+    <div class="cc">
+      <div class="ctitle">Média de Corrente por Minuto — Visão por Minuto</div>
+      <div class="csub">Cada linha representa um minuto (MIN1..MIN5) · ver se corrente cresce dentro do mesmo ciclo de pausa</div>
+      <div class="cwrap-lg"><canvas id="cPausaMinutos"></canvas></div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════ TENDÊNCIA ══════════════════════ -->
+<div class="page" id="p-tendencia">
+  <section>
+    <div class="slabel"><span class="slabel-text">corrente média ao longo dos ciclos</span></div>
+    <div class="cgrid">
+      <div class="cc">
+        <div class="ctitle">Corrente Média — Subida (100 amostras)</div>
+        <div class="csub">Linha vermelha = regressão linear · crescente indica desgaste progressivo</div>
+        <div class="cwrap-lg"><canvas id="cTendSub"></canvas></div>
+      </div>
+      <div class="cc">
+        <div class="ctitle">Corrente Média — Descida (10 amostras)</div>
+        <div class="csub">Evolução da corrente média na fase de descida por ciclo</div>
+        <div class="cwrap-lg"><canvas id="cTendDes"></canvas></div>
+      </div>
+    </div>
+  </section>
+  <section>
+    <div class="slabel"><span class="slabel-text">pico de corrente por ciclo</span></div>
+    <div class="cc">
+      <div class="ctitle">Corrente Máxima por Ciclo — Subida e Descida</div>
+      <div class="csub">Picos acima da linha tracejada (±2σ) são anomalias a investigar</div>
+      <div class="cwrap-lg"><canvas id="cPico"></canvas></div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════ COMPARADOR ══════════════════════ -->
+<div class="page" id="p-comparador">
+  <section>
+    <div class="slabel"><span class="slabel-text">comparador de ciclos</span></div>
+    <div class="cmp-selects">
+      <div class="cmp-slot">
+        <div class="cmp-slot-title"><span class="badge badge-blu">CICLO A</span></div>
+        <select id="cmpA" onchange="renderComparador()" style="width:100%;margin-top:6px"></select>
+      </div>
+      <div class="cmp-slot">
+        <div class="cmp-slot-title"><span class="badge badge-grn">CICLO B</span></div>
+        <select id="cmpB" onchange="renderComparador()" style="width:100%;margin-top:6px"></select>
+      </div>
+      <div class="cmp-slot">
+        <div class="cmp-slot-title"><span class="badge badge-amb">CICLO C (opcional)</span></div>
+        <select id="cmpC" onchange="renderComparador()" style="width:100%;margin-top:6px"><option value="">— nenhum —</option></select>
+      </div>
+    </div>
+    <div class="cc" style="margin-bottom:14px">
+      <div class="ctitle">Ciclo Completo — Subida · Pausa · Descida (160 amostras)</div>
+      <div class="csub">Sobreposição do ciclo inteiro entre os ciclos selecionados · linhas verticais marcam as transições S→Pausa→D</div>
+      <div class="cwrap-xl"><canvas id="cCmpCompleto"></canvas></div>
+    </div>
+  </section>
+  <section>
+    <div class="slabel"><span class="slabel-text">comparação por fase</span></div>
+    <div class="cgrid">
+      <div class="cc">
+        <div class="ctitle">Subida (100 amostras)</div>
+        <div class="csub">Sobreposição da fase de subida</div>
+        <div class="cwrap-lg"><canvas id="cCmpSub"></canvas></div>
+      </div>
+      <div class="cc">
+        <div class="ctitle">Pausa 5 min (50 amostras)</div>
+        <div class="csub">Sobreposição da fase de pausa no fim de curso</div>
+        <div class="cwrap-lg"><canvas id="cCmpPausa"></canvas></div>
+      </div>
+    </div>
+    <div class="cc" style="margin-top:14px">
+      <div class="ctitle">Descida (10 amostras)</div>
+      <div class="csub">Sobreposição da fase de descida</div>
+      <div class="cwrap-lg"><canvas id="cCmpDes"></canvas></div>
+    </div>
+  </section>
+</div>
+
+<!-- ══════════════════════ TEMPO ══════════════════════ -->
+<div class="page" id="p-tempo">
+  <section>
+    <div class="slabel"><span class="slabel-text">duração por ciclo</span></div>
+    <div class="cc">
+      <div class="ctitle">Duração por Ciclo — Subida e Descida (s)</div>
+      <div class="csub">Tempo real de cada ciclo (delta entre leituras consecutivas) · picos filtrados automaticamente</div>
+      <div class="cwrap-lg"><canvas id="cTempoSD"></canvas></div>
+    </div>
+  </section>
+  <section>
+    <div class="slabel"><span class="slabel-text">motor ativo por ciclo</span></div>
+    <div class="cc">
+      <div class="ctitle">Tempo Motor Ativo por Ciclo (s)</div>
+      <div class="csub">Duração real de funcionamento por ciclo (subida + descida, sem a pausa)</div>
+      <div class="cwrap-lg"><canvas id="cTempoAtivo"></canvas></div>
+    </div>
+  </section>
+  <section>
+    <div class="slabel"><span class="slabel-text">tempo total acumulado</span></div>
+    <div class="info-total" id="infoTotal">—</div>
+  </section>
+</div>
+
+<footer id="ft">Olsen Eletrônica · analise_motor_com_pausa · auto-refresh 60s</footer>
+
+<script>
+// ── URL CSV ──
+const CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQQctcyUS2x20VvnLt9nTMAGBMqeUnrafI-mak_1jxVcBFHOPTF7XxY9v-O8ACAQ1tLDOXBODOLVxLY/pub?gid=0&single=true&output=csv';
+
+// ── MAPEAMENTO DE COLUNAS (0-based) ──
+// A=0 Data, B=1 Hora, C=2 ciclos, D=3 tempo_assento_subindo
+// E..CZ (4..103): I_subindo_1..100
+// DA..DJ (104..113): MIN1_parado_1..10
+// DK..DT (114..123): MIN2_parado_1..10
+// DU..ED (124..133): MIN3_parado_1..10
+// EE..EN (134..143): MIN4_parado_1..10
+// EO..EX (144..153): MIN5_parado_1..10
+// EY..FH (154..163): I_descendo_1..10
+// FI=164 tempo_assento_descendo, FJ=165 tempo_motor_ativo, FK=166 tempo_total_teste
+const I = {
+  DATA:0, HORA:1, CICLOS:2, T_SUB:3,
+  SUB_START:4,   SUB_END:103,   // 100 amostras subindo
+  M1_START:104,  M1_END:113,    // MIN1_parado 1..10
+  M2_START:114,  M2_END:123,    // MIN2_parado 1..10
+  M3_START:124,  M3_END:133,    // MIN3_parado 1..10
+  M4_START:134,  M4_END:143,    // MIN4_parado 1..10
+  M5_START:144,  M5_END:153,    // MIN5_parado 1..10
+  DES_START:154, DES_END:163,   // I_descendo 1..10
+  T_DES:164,
+  T_ATIVO:165,
+  T_TOTAL:166,
+  BUCHA:167,
+  CARGA_ASSENTO:168,
+  CARGA_ENCOSTO:169,
+  MOLA:170
+};
+
+let DATA = [], CH = {}, TM = null;
+
+// ── PARSERS ──
+function parseCSV(txt) {
+  const lines = txt.trim().split('\n');
+  return lines.slice(1).filter(l => l.trim()).map(line => {
+    const vals = []; let cur = '', inQ = false;
+    for (const ch of line) {
+      if (ch === '"') inQ = !inQ;
+      else if (ch === ',' && !inQ) { vals.push(cur.trim()); cur = ''; }
+      else cur += ch;
+    }
+    vals.push(cur.trim());
+    return vals.map(v => {
+      const clean = v.replace(/^"|"$/g, '').trim();
+      const n = Number(clean);
+      return (clean !== '' && !isNaN(n) && String(n) === clean) ? n : clean;
+    });
+  });
+}
+
+const g   = (row, i) => row[i] ?? null;
+const num = (row, i) => { const v = g(row,i); return typeof v === 'number' ? v : null; };
+const str = (row, i) => { const v = g(row,i); return v !== null && v !== '' ? String(v) : null; };
+const f   = (v, d=2) => typeof v === 'number' && !isNaN(v) ? v.toFixed(d) : '—';
+const avg = a => a.length ? a.reduce((x,y) => x+y, 0) / a.length : 0;
+const fmtMin = v => {
+  if (typeof v !== 'number' || isNaN(v)) return '—';
+  const m = v / 60;
+  if (m < 60) return `${Math.round(m)} min`;
+  const h = Math.floor(m/60), mn = Math.round(m%60);
+  return mn > 0 ? `${h}h ${mn}min` : `${h}h`;
+};
+const fmtHora = v => {
+  if (typeof v !== 'number' || isNaN(v)) return '—';
+  if (v < 60) return `${Math.round(v)} min`;
+  const h = Math.floor(v/60), mn = Math.round(v%60);
+  return mn > 0 ? `${h}h ${mn}min` : `${h}h`;
+};
+
+// ── EXTRATORES ──
+function getSub(row) {
+  return Array.from({length:100}, (_,i) => num(row, I.SUB_START+i)).filter(v => v !== null);
+}
+function getDes(row) {
+  return Array.from({length:10},  (_,i) => num(row, I.DES_START+i)).filter(v => v !== null);
+}
+function getMin(row, minIdx) {
+  // minIdx 1..5
+  const starts = [I.M1_START, I.M2_START, I.M3_START, I.M4_START, I.M5_START];
+  const s = starts[minIdx-1];
+  return Array.from({length:10}, (_,i) => num(row, s+i)).filter(v => v !== null);
+}
+function getAllPausa(row) {
+  // retorna array plano de 50 valores (10 por minuto × 5 minutos)
+  const out = [];
+  for (let m = 1; m <= 5; m++) out.push(...getMin(row, m));
+  return out;
+}
+
+// ── ENRICH ──
+function enrich(data) {
+  data.forEach(row => {
+    const vs = getSub(row), vd = getDes(row);
+    row._mS = vs.length ? avg(vs) : null;
+    row._mD = vd.length ? avg(vd) : null;
+    row._pS = vs.length ? Math.max(...vs) : null;
+    row._pD = vd.length ? Math.max(...vd) : null;
+    // pausa: média e pico por minuto
+    row._pausaAvg = [];
+    row._pausaMax = [];
+    row._pausaGlobal = null;
+    for (let m = 1; m <= 5; m++) {
+      const vm = getMin(row, m);
+      row._pausaAvg.push(vm.length ? avg(vm) : null);
+      row._pausaMax.push(vm.length ? Math.max(...vm) : null);
+    }
+    const allP = getAllPausa(row).filter(v => v !== null);
+    row._pausaGlobal = allP.length ? Math.max(...allP) : null;
+  });
+}
+
+// ── NAV ──
+function goTab(id, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('p-'+id).classList.add('active');
+  if (id === 'tendencia') renderTendencia();
+  if (id === 'tempo')     renderTempo();
+  if (id === 'comparador') renderComparador();
+  if (id === 'pausa')     { renderPausa(); renderPausaTendencia(); }
+}
+
+// ── CHART DEFAULTS ──
+const chartColors = {
+  blu: '#2563eb', grn: '#16a34a', amb: '#d97706',
+  pur: '#7c3aed', cya: '#0891b2', red: '#dc2626'
+};
+const minColors = [chartColors.blu, chartColors.grn, chartColors.amb, chartColors.pur, chartColors.cya];
+
+// Tooltip base (sem data/hora) — para gráficos de perfil interno de ciclo
+function CO(extra = {}) {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    animation: {duration: 400},
+    plugins: {
+      legend: {
+        labels: {
+          color: '#4b5263',
+          font: {family: 'IBM Plex Mono', size: 10},
+          boxWidth: 10, padding: 12
+        }
+      },
+      tooltip: {
+        backgroundColor: '#ffffff',
+        borderColor: '#e2e5ea',
+        borderWidth: 1,
+        titleColor: '#1a1d23',
+        bodyColor: '#4b5263',
+        titleFont: {family: 'IBM Plex Mono', size: 11},
+        bodyFont: {family: 'IBM Plex Mono', size: 10},
+        padding: 10,
+        callbacks: {
+          label: ctx => {
+            const v = ctx.parsed.y;
+            return v !== null ? ` ${ctx.dataset.label}: ${typeof v === 'number' ? v.toFixed(3) + ' A' : v}` : null;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {color:'#8c93a3', font:{family:'IBM Plex Mono',size:9}, maxTicksLimit:20},
+        grid: {color:'#e2e5ea'}, border: {display:false}
+      },
+      y: {
+        ticks: {color:'#8c93a3', font:{family:'IBM Plex Mono',size:9}},
+        grid: {color:'#e2e5ea'}, border: {display:false}
+      }
+    },
+    ...extra
+  };
+}
+
+// Tooltip enriquecido com data/hora — para gráficos de série temporal (eixo X = ciclos)
+// rowsRef: array de rows na mesma ordem dos labels/dados do gráfico
+function COT(rowsRef, extra = {}) {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    animation: {duration: 400},
+    plugins: {
+      legend: {
+        labels: {
+          color: '#4b5263',
+          font: {family: 'IBM Plex Mono', size: 10},
+          boxWidth: 10, padding: 12
+        }
+      },
+      tooltip: {
+        backgroundColor: '#ffffff',
+        borderColor: '#cdd1d9',
+        borderWidth: 1,
+        titleColor: '#1a1d23',
+        bodyColor: '#4b5263',
+        footerColor: '#8c93a3',
+        titleFont: {family: 'IBM Plex Mono', size: 11, weight: '600'},
+        bodyFont:  {family: 'IBM Plex Mono', size: 10},
+        footerFont:{family: 'IBM Plex Mono', size: 9},
+        padding: 12,
+        boxPadding: 4,
+        callbacks: {
+          title: items => {
+            const idx = items[0].dataIndex;
+            const row = rowsRef[idx];
+            if (!row) return `Ciclo ${items[0].label}`;
+            return `Ciclo ${num(row, I.CICLOS) ?? items[0].label}`;
+          },
+          label: ctx => {
+            const v = ctx.parsed.y;
+            if (v === null || v === undefined) return null;
+            return ` ${ctx.dataset.label}: ${typeof v === 'number' ? v.toFixed(3) + ' A' : v}`;
+          },
+          footer: items => {
+            const idx = items[0].dataIndex;
+            const row = rowsRef[idx];
+            if (!row) return '';
+            const d = g(row, I.DATA) || '';
+            const h = g(row, I.HORA) || '';
+            return [`📅 ${d}`, `🕐 ${h}`];
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {color:'#8c93a3', font:{family:'IBM Plex Mono',size:9}, maxTicksLimit:20},
+        grid: {color:'#e2e5ea'}, border: {display:false}
+      },
+      y: {
+        ticks: {color:'#8c93a3', font:{family:'IBM Plex Mono',size:9}},
+        grid: {color:'#e2e5ea'}, border: {display:false}
+      }
+    },
+    ...extra
+  };
+}
+
+function dc(id) { if (CH[id]) { CH[id].destroy(); delete CH[id]; } }
+
+// ── SELECTS ──
+function populateSelects() {
+  const opts = DATA.map((row,i) => `<option value="${i}">${num(row,I.CICLOS) ?? i+1}</option>`).join('');
+  document.getElementById('selCiclo').innerHTML = opts;
+  document.getElementById('selCiclo').value = DATA.length-1;
+  document.getElementById('selPausa').innerHTML = opts;
+  document.getElementById('selPausa').value = DATA.length-1;
+
+  const optsC = DATA.map((row,i) => `<option value="${i}">Ciclo ${num(row,I.CICLOS) ?? i+1}</option>`).join('');
+  ['cmpA','cmpB'].forEach(id => {
+    document.getElementById(id).innerHTML = optsC;
+  });
+  document.getElementById('cmpA').value = 0;
+  document.getElementById('cmpB').value = DATA.length-1;
+  document.getElementById('cmpC').innerHTML = '<option value="">— nenhum —</option>' + optsC;
+}
+
+// ════════════════════════════════
+// RESUMO
+// ════════════════════════════════
+function renderResumo() {
+  if (!DATA.length) return;
+  const last = DATA[DATA.length-1];
+  const n = DATA.filter(r => r._mS !== null).length;
+
+  document.getElementById('kpiGrid').innerHTML = `
+    <div class="kpi"><div class="kpi-lbl">Ciclos Realizados</div><div class="kpi-val">${num(last,I.CICLOS) ?? '—'}<span class="kpi-unit">cx</span></div><div class="kpi-sub">${n} leituras registradas</div></div>
+    <div class="kpi"><div class="kpi-lbl">T. Total Subindo</div><div class="kpi-val">${fmtMin(num(last,I.T_SUB))}</div><div class="kpi-sub">acumulado</div></div>
+    <div class="kpi"><div class="kpi-lbl">T. Total Descendo</div><div class="kpi-val">${fmtMin(num(last,I.T_DES))}</div><div class="kpi-sub">acumulado</div></div>
+    <div class="kpi"><div class="kpi-lbl">Motor Ativo</div><div class="kpi-val">${fmtMin(num(last,I.T_ATIVO))}</div><div class="kpi-sub">sem pausa</div></div>
+    <div class="kpi"><div class="kpi-lbl">Tempo Total Teste</div><div class="kpi-val">${fmtHora(num(last,I.T_TOTAL))}</div><div class="kpi-sub">inclui pausa + descanso</div></div>`;
+
+  const setupRow = DATA.slice().reverse().find(r => str(r,I.BUCHA) || str(r,I.CARGA_ASSENTO)) || last;
+  document.getElementById('setupBar').innerHTML = `
+    <div><div class="setup-item-lbl">Material Bucha</div><div class="setup-item-val">${str(setupRow,I.BUCHA)||'—'}</div></div>
+    <div class="setup-divider"></div>
+    <div><div class="setup-item-lbl">Carga Assento</div><div class="setup-item-val">${str(setupRow,I.CARGA_ASSENTO)||'—'}</div></div>
+    <div class="setup-divider"></div>
+    <div><div class="setup-item-lbl">Carga Encosto</div><div class="setup-item-val">${str(setupRow,I.CARGA_ENCOSTO)||'—'}</div></div>
+    <div class="setup-divider"></div>
+    <div><div class="setup-item-lbl">Mola a Gás</div><div class="setup-item-val">${str(setupRow,I.MOLA)||'—'}</div></div>`;
+
+  const thead = '<tr><th>Ciclos</th><th>Data</th><th>Hora</th><th>Média ↑(A)</th><th>Pico ↑(A)</th><th>Pausa Max(A)</th><th>Média ↓(A)</th><th>T.Sub</th><th>T.Des</th><th>T.Ativo</th><th>T.Total</th></tr>';
+  const tbody = DATA.slice(-15).reverse().map(row => `
+    <tr>
+      <td class="hi">${num(row,I.CICLOS)??'—'}</td>
+      <td>${g(row,I.DATA)||'—'}</td>
+      <td>${g(row,I.HORA)||'—'}</td>
+      <td class="acc">${f(row._mS,3)}</td>
+      <td>${f(row._pS,3)}</td>
+      <td class="${row._pausaGlobal!==null&&row._pausaGlobal>0.05?'amb':'grn'}">${f(row._pausaGlobal,3)}</td>
+      <td>${f(row._mD,3)}</td>
+      <td>${fmtMin(num(row,I.T_SUB))}</td>
+      <td>${fmtMin(num(row,I.T_DES))}</td>
+      <td>${fmtMin(num(row,I.T_ATIVO))}</td>
+      <td>${fmtHora(num(row,I.T_TOTAL))}</td>
+    </tr>`).join('');
+  document.getElementById('tableBox').innerHTML = `<table><thead>${thead}</thead><tbody>${tbody}</tbody></table>`;
+}
+
+// ════════════════════════════════
+// PERFIL
+// ════════════════════════════════
+function renderPerfil() {
+  const idx = parseInt(document.getElementById('selCiclo').value);
+  const row = DATA[idx]; if (!row) return;
+
+  const vS = getSub(row);                         // 100 amostras subindo
+  const vM = [1,2,3,4,5].map(m => getMin(row,m)); // 5×10 amostras de pausa
+  const vD = getDes(row);                          // 10 amostras descendo
+
+  const nS = vS.length;
+  const nM = vM.reduce((s,a) => s+a.length, 0);   // até 50
+  const nD = vD.length;
+  const total = nS + nM + nD;
+
+  // ── Labels ──
+  const labels = [
+    ...vS.map((_,i)  => `S${i+1}`),
+    ...[1,2,3,4,5].flatMap(m => vM[m-1].map((_,i) => `M${m}.${i+1}`)),
+    ...vD.map((_,i)  => `D${i+1}`)
+  ];
+
+  // ── Helper: preenche posição certa, null no resto ──
+  const sparse = (values, startIdx) => {
+    const arr = new Array(total).fill(null);
+    values.forEach((v,i) => { arr[startIdx+i] = v; });
+    return arr;
+  };
+
+  // posições de início de cada segmento
+  const startS = 0;
+  const startM = [0,1,2,3,4].map(m => nS + vM.slice(0,m).reduce((s,a)=>s+a.length,0));
+  const startD = nS + nM;
+
+  // ── Médias de cada segmento ──
+  const mS  = vS.length  ? avg(vS)  : null;
+  const mD  = vD.length  ? avg(vD)  : null;
+  const mMs = vM.map(vm => vm.length ? avg(vm) : null);
+  const mPausa = vM.flat().length ? avg(vM.flat()) : null;
+
+  // picos
+  const pS = vS.length  ? Math.max(...vS)  : null;
+  const pD = vD.length  ? Math.max(...vD)  : null;
+  const pP = vM.flat().length ? Math.max(...vM.flat()) : null;
+
+  const cx = num(row, I.CICLOS) ?? idx+1;
+  document.getElementById('perfilTitle').textContent =
+    `Ciclo ${cx}  ·  ${g(row,I.DATA)||''}  ${g(row,I.HORA)||''}`;
+
+  // ── Datasets ──
+  const datasets = [
+    // Subida
+    {
+      label: '↑ Subindo (A)',
+      data: sparse(vS, startS),
+      borderColor: chartColors.blu,
+      backgroundColor: chartColors.blu+'18',
+      tension: .3, pointRadius: 2, pointHoverRadius: 5,
+      borderWidth: 1.8, fill: true, spanGaps: false
+    },
+    // Pausa — uma série por minuto
+    ...[0,1,2,3,4].map(m => ({
+      label: `⏸ MIN${m+1} (A)`,
+      data: vM[m].length ? sparse(vM[m], startM[m]) : new Array(total).fill(null),
+      borderColor: minColors[m],
+      backgroundColor: minColors[m]+'18',
+      tension: .3, pointRadius: 3, pointHoverRadius: 6,
+      borderWidth: 1.5, fill: false, spanGaps: false
+    })),
+    // Descida
+    {
+      label: '↓ Descendo (A)',
+      data: sparse(vD, startD),
+      borderColor: chartColors.grn,
+      backgroundColor: chartColors.grn+'18',
+      tension: .3, pointRadius: 3, pointHoverRadius: 6,
+      borderWidth: 1.8, fill: true, spanGaps: false
+    },
+    // Linha média subida
+    ...(mS !== null ? [{
+      label: `Média ↑ ${f(mS,3)}A`,
+      data: (() => { const a=new Array(total).fill(null); vS.forEach((_,i)=>{a[startS+i]=mS;}); return a; })(),
+      borderColor: chartColors.blu+'55', borderDash:[4,4],
+      pointRadius:0, borderWidth:1, spanGaps:false, fill:false
+    }] : []),
+    // Linha média pausa global
+    ...(mPausa !== null ? [{
+      label: `Média ⏸ ${f(mPausa,3)}A`,
+      data: (() => {
+        const a=new Array(total).fill(null);
+        [0,1,2,3,4].forEach(m => { vM[m].forEach((_,i)=>{a[startM[m]+i]=mPausa;}); });
+        return a;
+      })(),
+      borderColor: chartColors.amb+'66', borderDash:[4,4],
+      pointRadius:0, borderWidth:1, spanGaps:false, fill:false
+    }] : []),
+    // Linha média descida
+    ...(mD !== null ? [{
+      label: `Média ↓ ${f(mD,3)}A`,
+      data: (() => { const a=new Array(total).fill(null); vD.forEach((_,i)=>{a[startD+i]=mD;}); return a; })(),
+      borderColor: chartColors.grn+'55', borderDash:[4,4],
+      pointRadius:0, borderWidth:1, spanGaps:false, fill:false
+    }] : []),
+  ];
+
+  // ── Anotações de separação via plugin de linha vertical (via dataset vazio) ──
+  // Usamos fundo colorido por zona via anotação manual no título do tick
+  dc('cPerfil');
+  CH.cPerfil = new Chart(document.getElementById('cPerfil'), {
+    type: 'line',
+    data: {labels, datasets},
+    options: {
+      ...CO(),
+      plugins: {
+        ...CO().plugins,
+        tooltip: {
+          ...CO().plugins.tooltip,
+          callbacks: {
+            title: items => {
+              const lbl = items[0].label;
+              if (lbl.startsWith('S'))  return `Subida — Amostra ${lbl}`;
+              if (lbl.startsWith('M'))  return `Pausa — ${lbl.replace('.',' Amostra ')}`;
+              if (lbl.startsWith('D'))  return `Descida — Amostra ${lbl}`;
+              return lbl;
+            },
+            label: ctx => {
+              const v = ctx.parsed.y;
+              return v !== null
+                ? ` ${ctx.dataset.label}: ${typeof v==='number'?v.toFixed(3)+' A':v}`
+                : null;
+            },
+            footer: () => [`📅 ${g(row,I.DATA)||''}  🕐 ${g(row,I.HORA)||''}`]
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: ctx => {
+              const lbl = labels[ctx.index] ?? '';
+              if (lbl.startsWith('M')) return chartColors.amb;
+              if (lbl.startsWith('D')) return chartColors.grn;
+              return '#8c93a3';
+            },
+            font: {family:'IBM Plex Mono', size:8},
+            maxTicksLimit: 32,
+            maxRotation: 0
+          },
+          grid: {
+            color: ctx => {
+              const lbl = labels[ctx.index] ?? '';
+              // linha divisória mais forte nas fronteiras S→M, M→D
+              if (lbl === 'M1.1' || lbl === 'D1') return '#cdd1d9';
+              return '#e2e5ea';
+            },
+            lineWidth: ctx => {
+              const lbl = labels[ctx.index] ?? '';
+              return (lbl==='M1.1'||lbl==='D1') ? 2 : 1;
+            }
+          },
+          border: {display:false}
+        },
+        y: {
+          ticks: {color:'#8c93a3', font:{family:'IBM Plex Mono',size:9}},
+          grid: {color:'#e2e5ea'}, border:{display:false}
+        }
+      }
+    }
+  });
+
+  // ── Stats cards ──
+  const dtS = idx>0 ? num(row,I.T_SUB)-num(DATA[idx-1],I.T_SUB) : num(row,I.T_SUB);
+  const dtD = idx>0 ? num(row,I.T_DES)-num(DATA[idx-1],I.T_DES) : num(row,I.T_DES);
+  document.getElementById('perfilStats').innerHTML = `
+    <div class="kpi"><div class="kpi-lbl">Média Subindo</div><div class="kpi-val">${f(mS,3)}<span class="kpi-unit">A</span></div><div class="kpi-sub">100 amostras</div></div>
+    <div class="kpi"><div class="kpi-lbl">Pico Subindo</div><div class="kpi-val">${f(pS,3)}<span class="kpi-unit">A</span></div><div class="kpi-sub">valor máximo</div></div>
+    <div class="kpi"><div class="kpi-lbl">Média Pausa</div><div class="kpi-val">${f(mPausa,3)}<span class="kpi-unit">A</span></div><div class="kpi-sub">50 amostras · 5 min</div></div>
+    <div class="kpi"><div class="kpi-lbl">Pico Pausa</div><div class="kpi-val">${f(pP,3)}<span class="kpi-unit">A</span></div><div class="kpi-sub">maior leitura</div></div>
+    <div class="kpi"><div class="kpi-lbl">Média Descendo</div><div class="kpi-val">${f(mD,3)}<span class="kpi-unit">A</span></div><div class="kpi-sub">10 amostras</div></div>
+    <div class="kpi"><div class="kpi-lbl">Pico Descendo</div><div class="kpi-val">${f(pD,3)}<span class="kpi-unit">A</span></div><div class="kpi-sub">valor máximo</div></div>
+    <div class="kpi"><div class="kpi-lbl">Duração Subindo</div><div class="kpi-val">${f(dtS,2)}<span class="kpi-unit">s</span></div><div class="kpi-sub">neste ciclo</div></div>
+    <div class="kpi"><div class="kpi-lbl">Duração Descendo</div><div class="kpi-val">${f(dtD,2)}<span class="kpi-unit">s</span></div><div class="kpi-sub">neste ciclo</div></div>`;
+}
+
+// ════════════════════════════════
+// PAUSA 5 MIN
+// ════════════════════════════════
+function renderPausa() {
+  const idx = parseInt(document.getElementById('selPausa').value);
+  const row = DATA[idx]; if (!row) return;
+  const cx = num(row, I.CICLOS) ?? idx+1;
+  document.getElementById('pausaTitle').textContent = `Ciclo ${cx} — Pausa Fim de Curso`;
+
+  // gráfico: 50 labels P1.1..P1.10 | P2.1..P2.10 | ... | P5.1..P5.10
+  const labels = [], datasets = [];
+  const minNames = ['MIN 1','MIN 2','MIN 3','MIN 4','MIN 5'];
+  const allData = []; // 50 pontos
+  for (let m = 1; m <= 5; m++) {
+    for (let s = 1; s <= 10; s++) labels.push(`M${m}.${s}`);
+  }
+  for (let m = 1; m <= 5; m++) {
+    const vm = getMin(row, m);
+    const base = (m-1)*10;
+    const arr = new Array(50).fill(null);
+    vm.forEach((v,i) => { arr[base+i] = v; });
+    datasets.push({
+      label: minNames[m-1],
+      data: arr,
+      borderColor: minColors[m-1],
+      backgroundColor: minColors[m-1]+'20',
+      tension: .3, pointRadius: 3, borderWidth: 1.8,
+      fill: false, spanGaps: false
+    });
+    // avg line
+    if (vm.length) {
+      const avgV = avg(vm);
+      const arrAvg = new Array(50).fill(null);
+      vm.forEach((_,i) => { arrAvg[base+i] = avgV; });
+      datasets.push({
+        label: `Média M${m}: ${f(avgV,3)}A`,
+        data: arrAvg,
+        borderColor: minColors[m-1]+'55',
+        borderDash: [4,4], pointRadius: 0, borderWidth: 1,
+        fill: false, spanGaps: false
+      });
+    }
+  }
+
+  dc('cPausa');
+  CH.cPausa = new Chart(document.getElementById('cPausa'), {
+    type:'line',
+    data:{labels, datasets},
+    options: CO()
+  });
+
+  // stats cards
+  const minLabels = ['MIN 1','MIN 2','MIN 3','MIN 4','MIN 5'];
+  const minClasses = ['min1','min2','min3','min4','min5'];
+  document.getElementById('pausaStats').innerHTML = minLabels.map((mn,i) => {
+    const vm = getMin(row, i+1);
+    const a = vm.length ? avg(vm) : null;
+    const p = vm.length ? Math.max(...vm) : null;
+    const mn2 = vm.length ? Math.min(...vm) : null;
+    return `<div class="pausa-slot">
+      <div class="pausa-slot-title ${minClasses[i]}">${mn}</div>
+      <div class="kpi-lbl" style="margin-top:8px">Média</div>
+      <div style="font-family:var(--mono);font-size:18px;font-weight:600;color:var(--txt)">${f(a,3)} <span style="font-size:10px;color:var(--txt3)">A</span></div>
+      <div class="kpi-lbl" style="margin-top:6px">Pico / Mín</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${f(p,3)} / ${f(mn2,3)} A</div>
+      <div class="kpi-sub" style="margin-top:4px">${vm.length} amostras</div>
+    </div>`;
+  }).join('');
+}
+
+// ════════════════════════════════
+// PAUSA TENDÊNCIA
+// ════════════════════════════════
+function renderPausaTendencia() {
+  const valid = DATA.filter(r => r._pausaAvg.some(v => v !== null));
+  if (!valid.length) return;
+  const lb = valid.map(r => num(r,I.CICLOS) ?? '');
+  const minNames = ['MIN 1','MIN 2','MIN 3','MIN 4','MIN 5'];
+
+  // Gráfico 1: média por minuto ao longo dos ciclos
+  dc('cPausaTend');
+  CH.cPausaTend = new Chart(document.getElementById('cPausaTend'), {
+    type:'line',
+    data:{
+      labels: lb,
+      datasets: minNames.map((mn,i) => ({
+        label: mn,
+        data: valid.map(r => r._pausaAvg[i]),
+        borderColor: minColors[i],
+        backgroundColor: minColors[i]+'15',
+        tension: .3, pointRadius: 3, pointHoverRadius: 6,
+        pointBackgroundColor: minColors[i],
+        borderWidth: 1.5, fill: false, spanGaps: true
+      }))
+    },
+    options: COT(valid)
+  });
+
+  // Gráfico 2: pico global de pausa por ciclo
+  dc('cPausaPico');
+  CH.cPausaPico = new Chart(document.getElementById('cPausaPico'), {
+    type:'line',
+    data:{
+      labels: lb,
+      datasets:[{
+        label:'Pico pausa (A)',
+        data: valid.map(r => r._pausaGlobal),
+        borderColor: chartColors.red,
+        backgroundColor: chartColors.red+'15',
+        tension:.3, pointRadius:3, pointHoverRadius:6,
+        pointBackgroundColor: chartColors.red,
+        borderWidth:1.5, fill:true
+      }]
+    },
+    options: COT(valid)
+  });
+
+  dc('cPausaMinutos');
+  const trendData = [];
+  for (let m = 0; m < 5; m++) {
+    trendData.push(linReg(valid.map(r => r._pausaAvg[m])));
+  }
+  CH.cPausaMinutos = new Chart(document.getElementById('cPausaMinutos'), {
+    type:'line',
+    data:{
+      labels: lb,
+      datasets: [
+        ...minNames.map((mn,i) => ({
+          label: mn,
+          data: valid.map(r => r._pausaAvg[i]),
+          borderColor: minColors[i],
+          tension:.3, pointRadius:3, pointHoverRadius:6,
+          pointBackgroundColor: minColors[i],
+          borderWidth:1.5, fill:false
+        })),
+        ...minNames.map((mn,i) => ({
+          label: `Tend ${mn}`,
+          data: trendData[i],
+          borderColor: minColors[i]+'55',
+          borderDash:[5,4], pointRadius:0, pointHoverRadius:0, borderWidth:1, fill:false
+        }))
+      ]
+    },
+    options: COT(valid)
+  });
+}
+
+// ════════════════════════════════
+// TENDÊNCIA
+// ════════════════════════════════
+function linReg(ys) {
+  const clean = ys.map((v,i)=>({v,i})).filter(({v})=>v!==null);
+  if (!clean.length) return ys.map(()=>null);
+  const n = clean.length;
+  const mx = avg(clean.map(({i})=>i));
+  const my = avg(clean.map(({v})=>v));
+  const b = clean.reduce((s,{v,i})=>s+(i-mx)*(v-my),0) /
+            (clean.reduce((s,{i})=>s+(i-mx)**2,0)||1);
+  return ys.map((_,i)=> +(my+b*(i-mx)).toFixed(4));
+}
+
+function renderTendencia() {
+  const val = DATA.filter(r => r._mS !== null);
+  if (!val.length) return;
+  const lb = val.map(r => num(r,I.CICLOS) ?? '');
+  const aS = val.map(r => r._mS);
+  const mS = avg(aS), dS = Math.sqrt(avg(aS.map(v=>(v-mS)**2)));
+  const lS = mS + 2*dS;
+
+  dc('cTendSub');
+  CH.cTendSub = new Chart(document.getElementById('cTendSub'), {
+    type:'line',
+    data:{labels:lb, datasets:[
+      {label:'Média Subindo (A)', data:aS, borderColor:chartColors.blu, backgroundColor:chartColors.blu+'15', tension:.3, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.blu, borderWidth:1.5, fill:true},
+      {label:'Tendência',         data:linReg(aS), borderColor:chartColors.red, borderDash:[5,4], pointRadius:0, pointHoverRadius:0, borderWidth:1.5, fill:false},
+    ]},
+    options: COT(val)
+  });
+
+  const aD = val.map(r => r._mD);
+  dc('cTendDes');
+  CH.cTendDes = new Chart(document.getElementById('cTendDes'), {
+    type:'line',
+    data:{labels:lb, datasets:[
+      {label:'Média Descendo (A)', data:aD, borderColor:chartColors.grn, backgroundColor:chartColors.grn+'15', tension:.3, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.grn, borderWidth:1.5, fill:true},
+      {label:'Tendência',          data:linReg(aD), borderColor:chartColors.red, borderDash:[5,4], pointRadius:0, pointHoverRadius:0, borderWidth:1.5, fill:false},
+    ]},
+    options: COT(val)
+  });
+
+  dc('cPico');
+  CH.cPico = new Chart(document.getElementById('cPico'), {
+    type:'line',
+    data:{labels:lb, datasets:[
+      {label:'Pico ↑ (A)', data:val.map(r=>r._pS), borderColor:chartColors.blu, tension:.3, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.blu, borderWidth:1.5, fill:false},
+      {label:'Pico ↓ (A)', data:val.map(r=>r._pD), borderColor:chartColors.grn, tension:.3, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.grn, borderWidth:1.5, fill:false},
+      {label:`Threshold ±2σ (${f(lS,3)}A)`, data:val.map(()=>lS), borderColor:chartColors.red+'60', borderDash:[4,4], pointRadius:0, pointHoverRadius:0, borderWidth:1},
+    ]},
+    options: COT(val)
+  });
+}
+
+// ════════════════════════════════
+// COMPARADOR
+// ════════════════════════════════
+function renderComparador() {
+  const ia = parseInt(document.getElementById('cmpA').value);
+  const ib = parseInt(document.getElementById('cmpB').value);
+  const icStr = document.getElementById('cmpC').value;
+  const ic = icStr !== '' ? parseInt(icStr) : null;
+  const indices = [ia, ib, ...(ic !== null && DATA[ic] ? [ic] : [])];
+  const rows = indices.map(i => DATA[i]).filter(Boolean);
+  if (rows.length < 2) return;
+
+  const CL = [chartColors.blu, chartColors.grn, chartColors.amb];
+
+  // ── Labels comuns ──
+  const lblS = Array.from({length:100}, (_,i) => `S${i+1}`);
+  const lblP = [];
+  for (let m=1;m<=5;m++) for(let s=1;s<=10;s++) lblP.push(`M${m}.${s}`);
+  const lblD = Array.from({length:10}, (_,i) => `D${i+1}`);
+  const lblFull = [...lblS, ...lblP, ...lblD]; // 160 labels
+
+  // helper marcador + hover
+  const mk = (data, color, label) => ({
+    label, data, borderColor:color, backgroundColor:color+'18',
+    tension:.3, pointRadius:2, pointHoverRadius:5,
+    pointBackgroundColor:color, borderWidth:1.8, fill:false
+  });
+
+  // tooltip helper
+  function mkCmpTooltip(rowsArr, isTimeSeries=false) {
+    return {
+      backgroundColor:'#ffffff', borderColor:'#cdd1d9', borderWidth:1,
+      titleColor:'#1a1d23', bodyColor:'#4b5263', footerColor:'#8c93a3',
+      titleFont:{family:'IBM Plex Mono',size:11,weight:'600'},
+      bodyFont: {family:'IBM Plex Mono',size:10},
+      footerFont:{family:'IBM Plex Mono',size:9},
+      padding:12, boxPadding:4,
+      callbacks:{
+        title: items => {
+          const lbl = items[0].label;
+          if (lbl.startsWith('S'))  return `Subida — Amostra ${lbl}`;
+          if (lbl.startsWith('M'))  return `Pausa — ${lbl.replace('.',' Amostra ')}`;
+          if (lbl.startsWith('D'))  return `Descida — Amostra ${lbl}`;
+          return lbl;
+        },
+        label: ctx => {
+          const v = ctx.parsed.y;
+          return v!==null ? ` ${ctx.dataset.label}: ${typeof v==='number'?v.toFixed(3)+' A':v}` : null;
+        },
+        footer: items => {
+          return items
+            .map(item => {
+              const row = rowsArr[item.datasetIndex];
+              return row ? `${item.dataset.label.split(' ')[0]} → ${g(row,I.DATA)||''} ${g(row,I.HORA)||''}` : null;
+            })
+            .filter(Boolean)
+            .filter((v,i,a) => a.indexOf(v)===i); // dedup
+        }
+      }
+    };
+  }
+
+  // ── Gráfico Ciclo Completo ──
+  dc('cCmpCompleto');
+  CH.cCmpCompleto = new Chart(document.getElementById('cCmpCompleto'), {
+    type:'line',
+    data:{
+      labels: lblFull,
+      datasets: rows.map((r,i) => {
+        const vS = getSub(r);
+        const vP = getAllPausa(r);
+        const vD = getDes(r);
+        const data = [...vS, ...vP, ...vD].map((v,j) => j < vS.length+vP.length+vD.length ? v : null);
+        return mk(data, CL[i], `Ciclo ${num(r,I.CICLOS)??indices[i]+1}`);
+      })
+    },
+    options: {
+      ...CO(),
+      plugins: {...CO().plugins, tooltip: mkCmpTooltip(rows)},
+      scales: {
+        x: {
+          ticks: {
+            color: ctx => {
+              const lbl = lblFull[ctx.index]??'';
+              if (lbl.startsWith('M')) return chartColors.amb;
+              if (lbl.startsWith('D')) return chartColors.grn;
+              return '#8c93a3';
+            },
+            font:{family:'IBM Plex Mono',size:8},
+            maxTicksLimit:32, maxRotation:0
+          },
+          grid: {
+            color: ctx => {
+              const lbl = lblFull[ctx.index]??'';
+              return (lbl==='M1.1'||lbl==='D1') ? '#cdd1d9' : '#e2e5ea';
+            },
+            lineWidth: ctx => {
+              const lbl = lblFull[ctx.index]??'';
+              return (lbl==='M1.1'||lbl==='D1') ? 2 : 1;
+            }
+          },
+          border:{display:false}
+        },
+        y:{ticks:{color:'#8c93a3',font:{family:'IBM Plex Mono',size:9}},grid:{color:'#e2e5ea'},border:{display:false}}
+      }
+    }
+  });
+
+  // ── Subida ──
+  dc('cCmpSub');
+  CH.cCmpSub = new Chart(document.getElementById('cCmpSub'), {
+    type:'line',
+    data:{labels:lblS, datasets:rows.map((r,i) => mk(getSub(r), CL[i], `Ciclo ${num(r,I.CICLOS)??indices[i]+1} ↑`))},
+    options:{...CO(), plugins:{...CO().plugins, tooltip:mkCmpTooltip(rows)}}
+  });
+
+  // ── Pausa ──
+  dc('cCmpPausa');
+  CH.cCmpPausa = new Chart(document.getElementById('cCmpPausa'), {
+    type:'line',
+    data:{labels:lblP, datasets:rows.map((r,i) => mk(getAllPausa(r), CL[i], `Ciclo ${num(r,I.CICLOS)??indices[i]+1} ⏸`))},
+    options:{...CO(), plugins:{...CO().plugins, tooltip:mkCmpTooltip(rows)}}
+  });
+
+  // ── Descida ──
+  dc('cCmpDes');
+  CH.cCmpDes = new Chart(document.getElementById('cCmpDes'), {
+    type:'line',
+    data:{labels:lblD, datasets:rows.map((r,i) => mk(getDes(r), CL[i], `Ciclo ${num(r,I.CICLOS)??indices[i]+1} ↓`))},
+    options:{...CO(), plugins:{...CO().plugins, tooltip:mkCmpTooltip(rows)}}
+  });
+}
+
+// ════════════════════════════════
+// TEMPO
+// ════════════════════════════════
+function mediana(arr) {
+  const s = [...arr].filter(v=>v!==null).sort((a,b)=>a-b);
+  if (!s.length) return null;
+  const m = Math.floor(s.length/2);
+  return s.length%2 ? s[m] : (s[m-1]+s[m])/2;
+}
+function deltas(colIdx) {
+  const raw = DATA.map((r,i) => {
+    if (i===0) return null;
+    const cur=num(r,colIdx), prev=num(DATA[i-1],colIdx);
+    if (cur===null||prev===null) return null;
+    const d=cur-prev; return d>=0 ? +d.toFixed(3) : null;
+  });
+  const med = mediana(raw); if (!med) return raw;
+  return raw.map(v => v!==null && v>med*1.6 ? null : v);
+}
+
+function renderTempo() {
+  const lb = DATA.map(r => num(r,I.CICLOS) ?? '');
+  dc('cTempoSD');
+  CH.cTempoSD = new Chart(document.getElementById('cTempoSD'), {
+    type:'line',
+    data:{labels:lb, datasets:[
+      {label:'Subida (s)',  data:deltas(I.T_SUB), borderColor:chartColors.blu, backgroundColor:chartColors.blu+'15', tension:.5, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.blu, borderWidth:1.5, fill:true, spanGaps:false},
+      {label:'Descida (s)', data:deltas(I.T_DES), borderColor:chartColors.grn, backgroundColor:chartColors.grn+'15', tension:.5, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.grn, borderWidth:1.5, fill:true, spanGaps:false},
+    ]},
+    options: COT(DATA, {
+      plugins: { tooltip: { callbacks: {
+        title: items => {
+          const row = DATA[items[0].dataIndex];
+          return row ? `Ciclo ${num(row,I.CICLOS) ?? items[0].label}` : `Ciclo ${items[0].label}`;
+        },
+        label: ctx => {
+          const v = ctx.parsed.y;
+          return v !== null ? ` ${ctx.dataset.label}: ${typeof v === 'number' ? v.toFixed(2) + ' s' : v}` : null;
+        },
+        footer: items => {
+          const row = DATA[items[0].dataIndex];
+          if (!row) return '';
+          return [`📅 ${g(row,I.DATA)||''}`, `🕐 ${g(row,I.HORA)||''}`];
+        }
+      }}}
+    })
+  });
+
+  dc('cTempoAtivo');
+  CH.cTempoAtivo = new Chart(document.getElementById('cTempoAtivo'), {
+    type:'line',
+    data:{labels:lb, datasets:[
+      {label:'Motor Ativo (s)', data:deltas(I.T_ATIVO), borderColor:chartColors.pur, backgroundColor:chartColors.pur+'15', tension:.5, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.pur, borderWidth:1.5, fill:true, spanGaps:false},
+    ]},
+    options: COT(DATA, {
+      plugins: { tooltip: { callbacks: {
+        title: items => {
+          const row = DATA[items[0].dataIndex];
+          return row ? `Ciclo ${num(row,I.CICLOS) ?? items[0].label}` : `Ciclo ${items[0].label}`;
+        },
+        label: ctx => {
+          const v = ctx.parsed.y;
+          return v !== null ? ` ${ctx.dataset.label}: ${typeof v === 'number' ? v.toFixed(2) + ' s' : v}` : null;
+        },
+        footer: items => {
+          const row = DATA[items[0].dataIndex];
+          if (!row) return '';
+          return [`📅 ${g(row,I.DATA)||''}`, `🕐 ${g(row,I.HORA)||''}`];
+        }
+      }}}
+    })
+  });
+
+  const last = DATA[DATA.length-1];
+  document.getElementById('infoTotal').innerHTML = `
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8c93a3" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 4v4l3 2"/></svg>
+    Tempo total de teste: <strong>${fmtHora(num(last,I.T_TOTAL))}</strong>
+    &nbsp;·&nbsp; Subindo acumulado: <strong>${fmtMin(num(last,I.T_SUB))}</strong>
+    &nbsp;·&nbsp; Descendo acumulado: <strong>${fmtMin(num(last,I.T_DES))}</strong>
+    &nbsp;·&nbsp; Motor ativo acumulado: <strong>${fmtMin(num(last,I.T_ATIVO))}</strong>`;
+}
+
+// ════════════════════════════════
+// LOAD
+// ════════════════════════════════
+async function loadData() {
+  const btn = document.getElementById('btnR');
+  btn.disabled = true; btn.classList.add('spin');
+  document.getElementById('lu').textContent = 'atualizando...';
+  clearTimeout(TM);
+  try {
+    const res = await fetch(CSV + '&t=' + Date.now());
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const parsed = parseCSV(await res.text());
+    if (!parsed.length) throw new Error('sem dados');
+    DATA = parsed; enrich(DATA); populateSelects();
+    renderResumo(); renderPerfil();
+    const at = document.querySelector('.tab.active')?.textContent?.trim();
+    if (at === 'TENDÊNCIA') renderTendencia();
+    if (at === 'TEMPO DE CICLO') renderTempo();
+    if (at === 'COMPARADOR') renderComparador();
+    if (at === 'PAUSA 5 MIN') { renderPausa(); renderPausaTendencia(); }
+    const now = new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    document.getElementById('lu').textContent = now;
+    const last = DATA[DATA.length-1];
+    document.getElementById('ft').textContent = `Olsen Eletrônica · analise_motor_com_pausa · ${num(last,I.CICLOS)??'?'} ciclos · ${now} · auto-refresh 60s`;
+  } catch(e) {
+    document.getElementById('kpiGrid').innerHTML = `<div class="sbox"><span>erro: ${e.message}</span></div>`;
+    document.getElementById('lu').textContent = 'erro';
+    console.error(e);
+  } finally {
+    btn.disabled = false; btn.classList.remove('spin');
+    TM = setTimeout(loadData, 60000);
+  }
+}
+loadData();
+</script>
+</body>
+</html>
