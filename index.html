@@ -713,7 +713,8 @@ function renderComparador(){
   const indices=[ia,ib,...(ic!==null&&DATA[ic]?[ic]:[])];
   const rows=indices.map(i=>DATA[i]).filter(Boolean);if(rows.length<2)return;
   // Cor de cada ciclo baseada na sua bucha
-  const CL=indices.map(i=>paletteForIdx(i).line);
+  // Cores fixas por posição (A=azul, B=verde, C=laranja) — independente da bucha
+  const CL=['#2563eb','#16a34a','#d97706'];
   const lblS=Array.from({length:100},(_,i)=>`S${i+1}`);
   const lblP=[];for(let m=1;m<=5;m++)for(let s=1;s<=10;s++)lblP.push(`M${m}.${s}`);
   const lblD=Array.from({length:10},(_,i)=>`D${i+1}`);
