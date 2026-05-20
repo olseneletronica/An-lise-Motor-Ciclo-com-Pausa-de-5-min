@@ -526,8 +526,8 @@ function renderResumo(){
     <div class="kpi"><div class="kpi-lbl">Motor Ativo</div><div class="kpi-val">${fmtMin(num(last,I.T_ATIVO))}</div><div class="kpi-sub">sem pausa</div></div>
     <div class="kpi"><div class="kpi-lbl">Tempo Total Teste</div><div class="kpi-val">${fmtHora(num(last,I.T_TOTAL))}</div><div class="kpi-sub">inclui pausa + descanso</div></div>`;
 
-  // Configuração do ensaio (params fixos da primeira row que tem dados)
-  const setupRow=DATA.slice().reverse().find(r=>str(r,I.CARGA_ASSENTO))||last;
+  // Pega a última linha com qualquer campo de configuração preenchido
+  const setupRow=DATA.slice().reverse().find(r=>str(r,I.CARGA_ASSENTO)||str(r,I.CARGA_ENCOSTO))||last;
   document.getElementById('ensaioParams').innerHTML=`
     <div><div class="setup-item-lbl">Carga Assento</div><div class="setup-item-val">${str(setupRow,I.CARGA_ASSENTO)||'—'}</div></div>
     <div class="setup-divider"></div>
