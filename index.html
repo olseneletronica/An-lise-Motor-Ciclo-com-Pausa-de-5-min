@@ -11,14 +11,35 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#f4f5f7;--bg2:#ffffff;--bg3:#eef0f3;--sur:#ffffff;--sur2:#f4f5f7;
-  --brd:#e2e5ea;--brd2:#cdd1d9;--txt:#1a1d23;--txt2:#4b5263;--txt3:#8c93a3;
-  --acc:#2563eb;--acc2:#1d4ed8;--grn:#16a34a;--amb:#d97706;--red:#dc2626;
-  --pur:#7c3aed;--cya:#0891b2;--r:6px;--rl:10px;
-  --mono:'Inter',sans-serif;--sans:'Inter',sans-serif;
+  --bg:#f4f5f7;
+  --bg2:#ffffff;
+  --bg3:#eef0f3;
+  --sur:#ffffff;
+  --sur2:#f4f5f7;
+  --brd:#e2e5ea;
+  --brd2:#cdd1d9;
+  --txt:#1a1d23;
+  --txt2:#4b5263;
+  --txt3:#8c93a3;
+  --acc:#2563eb;
+  --acc2:#1d4ed8;
+  --grn:#16a34a;
+  --amb:#d97706;
+  --red:#dc2626;
+  --pur:#7c3aed;
+  --cya:#0891b2;
+  --r:6px;--rl:10px;
+  --mono:'Inter',sans-serif;
+  --sans:'Inter',sans-serif;
 }
 body{background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:14px;line-height:1.5;min-height:100vh}
-header{background:var(--bg2);border-bottom:1px solid var(--brd);padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+
+header{
+  background:var(--bg2);border-bottom:1px solid var(--brd);
+  padding:0 32px;height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
 .hlogo{display:flex;align-items:center;gap:16px}
 .hdivider{width:1px;height:36px;background:var(--brd2)}
 .htitle{font-size:13px;font-weight:600;color:var(--txt);letter-spacing:.01em}
@@ -27,23 +48,40 @@ header{background:var(--bg2);border-bottom:1px solid var(--brd);padding:0 32px;h
 .live-dot{width:6px;height:6px;border-radius:50%;background:var(--grn);box-shadow:0 0 5px #16a34a88;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 .live-label{font-size:10px;color:var(--txt3);font-family:var(--mono)}
-.btn{display:flex;align-items:center;gap:6px;background:var(--sur2);border:1px solid var(--brd2);border-radius:var(--r);color:var(--txt2);font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.08em;padding:6px 14px;cursor:pointer;transition:all .15s}
+.btn{
+  display:flex;align-items:center;gap:6px;
+  background:var(--sur2);border:1px solid var(--brd2);border-radius:var(--r);
+  color:var(--txt2);font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:.08em;padding:6px 14px;cursor:pointer;transition:all .15s;
+}
 .btn:hover{background:var(--brd2);color:var(--txt);border-color:var(--txt3)}
 .btn:disabled{opacity:.35;cursor:not-allowed}
 .btn svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.8}
 .btn.spin svg{animation:rot .8s linear infinite}
 @keyframes rot{to{transform:rotate(360deg)}}
-nav{background:var(--bg2);border-bottom:1px solid var(--brd);padding:0 32px;display:flex;overflow-x:auto;scrollbar-width:none}
+
+nav{
+  background:var(--bg2);border-bottom:1px solid var(--brd);
+  padding:0 32px;display:flex;overflow-x:auto;scrollbar-width:none;
+}
 nav::-webkit-scrollbar{display:none}
-.tab{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:14px 16px;cursor:pointer;color:var(--txt3);border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.tab{
+  font-family:var(--mono);font-size:10px;font-weight:500;
+  letter-spacing:.1em;text-transform:uppercase;
+  padding:14px 16px;cursor:pointer;color:var(--txt3);
+  border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;
+}
 .tab:hover{color:var(--txt2)}
 .tab.active{color:var(--acc);border-bottom-color:var(--acc)}
+
 .page{display:none;padding:28px 32px;max-width:1440px;margin:0 auto}
 .page.active{display:block}
+
 .slabel{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .slabel-text{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--txt3);white-space:nowrap}
 .slabel::after{content:'';flex:1;height:1px;background:var(--brd)}
 section{margin-bottom:32px}
+
 .kpi-grid{display:grid;gap:1px;background:var(--brd);border:1px solid var(--brd);border-radius:var(--rl);overflow:hidden}
 .kpi-grid-5{grid-template-columns:repeat(5,1fr)}
 .kpi-grid-6{grid-template-columns:repeat(6,1fr)}
@@ -55,6 +93,7 @@ section{margin-bottom:32px}
 .kpi-val{font-family:var(--mono);font-size:22px;font-weight:600;color:var(--txt);line-height:1}
 .kpi-unit{font-size:11px;color:var(--txt3);margin-left:2px;font-weight:400}
 .kpi-sub{font-family:var(--mono);font-size:9px;color:var(--txt3);margin-top:5px}
+
 .cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(460px,1fr));gap:14px}
 .cgrid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 .cc{background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);padding:20px 22px 16px}
@@ -63,15 +102,41 @@ section{margin-bottom:32px}
 .cwrap{height:240px;position:relative}
 .cwrap-lg{height:300px;position:relative}
 .cwrap-xl{height:360px;position:relative}
-.setup-bar{background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);padding:14px 22px;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+
+.setup-bar{
+  background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);
+  padding:14px 22px;display:flex;align-items:center;gap:28px;flex-wrap:wrap;
+}
 .setup-item-lbl{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);margin-bottom:3px}
 .setup-item-val{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--txt)}
 .setup-divider{width:1px;height:32px;background:var(--brd2)}
+
+/* historico de buchas */
+.bucha-hist{
+  background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);
+  padding:14px 22px;margin-top:12px;
+}
+.bucha-hist-title{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--txt3);margin-bottom:10px}
+.bucha-hist-list{display:flex;flex-wrap:wrap;gap:8px}
+.bucha-hist-item{
+  display:flex;align-items:center;gap:8px;
+  background:var(--bg3);border:1px solid var(--brd2);border-radius:var(--r);
+  padding:6px 12px;font-family:var(--mono);font-size:11px;
+}
+.bucha-hist-ciclo{color:var(--acc);font-weight:600;white-space:nowrap}
+.bucha-hist-name{color:var(--txt)}
+.bucha-hist-arrow{color:var(--txt3);font-size:10px}
+
 .ctrl-row{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
 .ctrl-label{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--txt3);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
-select{font-family:var(--mono);font-size:11px;background:var(--sur2);border:1px solid var(--brd2);border-radius:var(--r);color:var(--txt);padding:5px 10px;cursor:pointer;outline:none}
+select{
+  font-family:var(--mono);font-size:11px;
+  background:var(--sur2);border:1px solid var(--brd2);border-radius:var(--r);
+  color:var(--txt);padding:5px 10px;cursor:pointer;outline:none;
+}
 select:focus{border-color:var(--acc)}
 select option{background:var(--bg3)}
+
 .badge{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.06em;padding:3px 9px;border-radius:4px;border:1px solid;white-space:nowrap}
 .badge-blu{background:#dbeafe;border-color:#93c5fd;color:#1d4ed8}
 .badge-grn{background:#dcfce7;border-color:#86efac;color:#15803d}
@@ -79,18 +144,16 @@ select option{background:var(--bg3)}
 .badge-pur{background:#f3e8ff;border-color:#d8b4fe;color:#6d28d9}
 .badge-cya{background:#cffafe;border-color:#67e8f9;color:#0e7490}
 .badge-red{background:#fee2e2;border-color:#fca5a5;color:#b91c1c}
-/* Bucha change banner */
-.bucha-banner{background:linear-gradient(90deg,#fffbeb 0%,#fef3c7 100%);border:1px solid #fcd34d;border-radius:var(--r);padding:10px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10px;color:#92400e}
-/* Pausa */
+
 .pausa-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}
 .pausa-slot{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);padding:12px 14px}
 .pausa-slot-title{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
 .min1{color:#2563eb}.min2{color:#16a34a}.min3{color:#d97706}.min4{color:#7c3aed}.min5{color:#0891b2}
-/* Comparador */
+
 .cmp-selects{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
 .cmp-slot{background:var(--sur);border:1px solid var(--brd);border-radius:var(--r);padding:12px 14px}
 .cmp-slot-title{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);margin-bottom:6px}
-/* Table */
+
 .tcard{background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);overflow:hidden}
 .twrap{overflow-x:auto}
 table{width:100%;border-collapse:collapse}
@@ -103,14 +166,19 @@ td.hi{color:var(--txt);font-weight:600}
 td.acc{color:var(--acc);font-weight:600}
 td.grn{color:var(--grn)}
 td.amb{color:var(--amb)}
-tr.bucha-change-row td{background:#fffbeb!important;border-top:2px solid #fcd34d!important}
-tr.bucha-change-row:hover td{background:#fef3c7!important}
-/* Loading */
+
 .sbox{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:200px;gap:10px;color:var(--txt3);font-family:var(--mono);font-size:11px}
 .spinner{width:18px;height:18px;border:1.5px solid var(--brd2);border-top-color:var(--acc);border-radius:50%;animation:rot .7s linear infinite}
-.info-total{background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);padding:14px 22px;display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;color:var(--txt3);flex-wrap:wrap}
+
+.info-total{
+  background:var(--sur);border:1px solid var(--brd);border-radius:var(--rl);
+  padding:14px 22px;display:flex;align-items:center;gap:10px;
+  font-family:var(--mono);font-size:11px;color:var(--txt3);flex-wrap:wrap;
+}
 .info-total strong{color:var(--txt);font-weight:600}
+
 footer{text-align:center;padding:16px 32px;font-family:var(--mono);font-size:9px;color:var(--txt3);border-top:1px solid var(--brd);letter-spacing:.08em}
+
 @media(max-width:900px){
   .page{padding:16px}.kpi-grid-5,.kpi-grid-6,.kpi-grid-7,.kpi-grid-8{grid-template-columns:1fr 1fr}
   .cgrid,.cgrid-3,.cmp-selects,.pausa-grid{grid-template-columns:1fr}
@@ -150,22 +218,29 @@ footer{text-align:center;padding:16px 32px;font-family:var(--mono);font-size:9px
   <div class="tab" onclick="goTab('tempo',this)">TEMPO DE CICLO</div>
 </nav>
 
+<!-- ══ RESUMO ══ -->
 <div class="page active" id="p-resumo">
   <section>
     <div class="slabel"><span class="slabel-text">métricas gerais</span></div>
-    <div class="kpi-grid kpi-grid-5" id="kpiGrid"><div class="sbox"><div class="spinner"></div><span>carregando...</span></div></div>
+    <div class="kpi-grid kpi-grid-5" id="kpiGrid">
+      <div class="sbox"><div class="spinner"></div><span>carregando...</span></div>
+    </div>
   </section>
   <section>
     <div class="slabel"><span class="slabel-text">configuração do ensaio</span></div>
     <div class="setup-bar" id="setupBar"><span style="color:var(--txt3);font-family:var(--mono);font-size:11px">Carregando...</span></div>
+    <div class="bucha-hist" id="buchaHist" style="display:none">
+      <div class="bucha-hist-title">Histórico de Buchas</div>
+      <div class="bucha-hist-list" id="buchaHistList"></div>
+    </div>
   </section>
   <section>
     <div class="slabel"><span class="slabel-text">últimas 15 leituras</span></div>
-    <div id="buchaBannerResumo"></div>
     <div class="tcard"><div class="twrap" id="tableBox"></div></div>
   </section>
 </div>
 
+<!-- ══ PERFIL ══ -->
 <div class="page" id="p-perfil">
   <section>
     <div class="slabel"><span class="slabel-text">perfil de corrente — ciclo completo</span></div>
@@ -178,17 +253,20 @@ footer{text-align:center;padding:16px 32px;font-family:var(--mono);font-size:9px
         <span class="badge badge-grn">10 amostras ↓ descendo</span>
       </div>
       <div class="ctitle" id="perfilTitle">—</div>
-      <div class="csub">Corrente ao longo do ciclo completo · Subida (S1..S100) · Pausa 5 min · Descida (D1..D10)<br>
-        <span style="color:var(--amb)">★ Corrente média de subida calculada apenas com amostras ≥ 0.8 A (motor ativo)</span></div>
+      <div class="csub">Corrente ao longo do ciclo completo — Subida (S1..S100) · Pausa 5 min (M1..M5 × 10 amostras) · Descida (D1..D10) · 160 amostras totais<br>
+      <span style="color:var(--amb)">★ Média de subida calculada apenas com amostras ≥ 0.8 A (motor ativo)</span></div>
       <div class="cwrap-xl"><canvas id="cPerfil"></canvas></div>
     </div>
   </section>
   <section>
     <div class="slabel"><span class="slabel-text">estatísticas do ciclo selecionado</span></div>
-    <div class="kpi-grid kpi-grid-8" id="perfilStats"><div class="sbox"><span>selecione um ciclo</span></div></div>
+    <div class="kpi-grid kpi-grid-8" id="perfilStats">
+      <div class="sbox"><span>selecione um ciclo</span></div>
+    </div>
   </section>
 </div>
 
+<!-- ══ PAUSA 5 MIN ══ -->
 <div class="page" id="p-pausa">
   <section>
     <div class="slabel"><span class="slabel-text">corrente durante pausa — 5 minutos no fim de curso</span></div>
@@ -196,8 +274,10 @@ footer{text-align:center;padding:16px 32px;font-family:var(--mono);font-size:9px
       <div class="ctrl-row">
         <span class="ctrl-label">Ciclo:</span>
         <select id="selPausa" onchange="renderPausa()"></select>
-        <span class="badge badge-blu">MIN 1</span><span class="badge badge-grn">MIN 2</span>
-        <span class="badge badge-amb">MIN 3</span><span class="badge badge-pur">MIN 4</span>
+        <span class="badge badge-blu">MIN 1</span>
+        <span class="badge badge-grn">MIN 2</span>
+        <span class="badge badge-amb">MIN 3</span>
+        <span class="badge badge-pur">MIN 4</span>
         <span class="badge badge-cya">MIN 5</span>
       </div>
       <div class="ctitle" id="pausaTitle">—</div>
@@ -207,19 +287,21 @@ footer{text-align:center;padding:16px 32px;font-family:var(--mono);font-size:9px
   </section>
   <section>
     <div class="slabel"><span class="slabel-text">estatísticas de pausa por minuto</span></div>
-    <div class="pausa-grid" id="pausaStats"><div class="sbox"><span>selecione um ciclo</span></div></div>
+    <div class="pausa-grid" id="pausaStats">
+      <div class="sbox"><span>selecione um ciclo</span></div>
+    </div>
   </section>
   <section>
     <div class="slabel"><span class="slabel-text">tendência da corrente de pausa ao longo dos ciclos</span></div>
     <div class="cgrid">
       <div class="cc">
         <div class="ctitle">Corrente Média por Minuto — Todos os Ciclos</div>
-        <div class="csub">Evolução da média de cada minuto de pausa · tendência crescente pode indicar descida do assento · <span style="color:var(--amb);font-weight:600">linha laranja = troca de bucha</span></div>
+        <div class="csub">Evolução da média de cada minuto de pausa ao longo do ensaio · tendência crescente pode indicar descida do assento</div>
         <div class="cwrap-lg"><canvas id="cPausaTend"></canvas></div>
       </div>
       <div class="cc">
         <div class="ctitle">Corrente Máxima de Pausa por Ciclo</div>
-        <div class="csub">Pico de corrente em qualquer dos 5 minutos · detecta movimentação indesejada · <span style="color:var(--amb);font-weight:600">linha laranja = troca de bucha</span></div>
+        <div class="csub">Pico de corrente em qualquer dos 5 minutos · detecta movimentação indesejada</div>
         <div class="cwrap-lg"><canvas id="cPausaPico"></canvas></div>
       </div>
     </div>
@@ -228,25 +310,25 @@ footer{text-align:center;padding:16px 32px;font-family:var(--mono);font-size:9px
     <div class="slabel"><span class="slabel-text">evolução minuto a minuto — comparativo entre ciclos</span></div>
     <div class="cc">
       <div class="ctitle">Média de Corrente por Minuto — Visão por Minuto</div>
-      <div class="csub">Cada linha representa um minuto (MIN1..MIN5) · ver se corrente cresce dentro do mesmo ciclo · <span style="color:var(--amb);font-weight:600">linha laranja = troca de bucha</span></div>
+      <div class="csub">Cada linha representa um minuto (MIN1..MIN5) · ver se corrente cresce dentro do mesmo ciclo de pausa</div>
       <div class="cwrap-lg"><canvas id="cPausaMinutos"></canvas></div>
     </div>
   </section>
 </div>
 
+<!-- ══ TENDÊNCIA ══ -->
 <div class="page" id="p-tendencia">
   <section>
     <div class="slabel"><span class="slabel-text">corrente média ao longo dos ciclos</span></div>
-    <div id="buchaBannerTend"></div>
     <div class="cgrid">
       <div class="cc">
         <div class="ctitle">Corrente Média — Subida (motor ativo ≥ 0.8 A)</div>
-        <div class="csub">Linha vermelha = regressão linear · crescente indica desgaste progressivo · <span style="color:var(--amb);font-weight:600">linha laranja tracejada = troca de bucha</span></div>
+        <div class="csub">Linha vermelha = regressão linear · crescente indica desgaste progressivo</div>
         <div class="cwrap-lg"><canvas id="cTendSub"></canvas></div>
       </div>
       <div class="cc">
         <div class="ctitle">Corrente Média — Descida (10 amostras)</div>
-        <div class="csub">Evolução da corrente média na fase de descida por ciclo · <span style="color:var(--amb);font-weight:600">linha laranja tracejada = troca de bucha</span></div>
+        <div class="csub">Evolução da corrente média na fase de descida por ciclo</div>
         <div class="cwrap-lg"><canvas id="cTendDes"></canvas></div>
       </div>
     </div>
@@ -255,12 +337,13 @@ footer{text-align:center;padding:16px 32px;font-family:var(--mono);font-size:9px
     <div class="slabel"><span class="slabel-text">pico de corrente por ciclo</span></div>
     <div class="cc">
       <div class="ctitle">Corrente Máxima por Ciclo — Subida e Descida</div>
-      <div class="csub">Picos acima da linha tracejada (±2σ) são anomalias a investigar · <span style="color:var(--amb);font-weight:600">linha laranja tracejada = troca de bucha</span></div>
+      <div class="csub">Picos acima da linha tracejada (±2σ) são anomalias a investigar</div>
       <div class="cwrap-lg"><canvas id="cPico"></canvas></div>
     </div>
   </section>
 </div>
 
+<!-- ══ COMPARADOR ══ -->
 <div class="page" id="p-comparador">
   <section>
     <div class="slabel"><span class="slabel-text">comparador de ciclos</span></div>
@@ -306,6 +389,7 @@ footer{text-align:center;padding:16px 32px;font-family:var(--mono);font-size:9px
   </section>
 </div>
 
+<!-- ══ TEMPO ══ -->
 <div class="page" id="p-tempo">
   <section>
     <div class="slabel"><span class="slabel-text">duração por ciclo</span></div>
@@ -332,150 +416,255 @@ footer{text-align:center;padding:16px 32px;font-family:var(--mono);font-size:9px
 <footer id="ft">Olsen Eletrônica · analise_motor_com_pausa · auto-refresh 120s</footer>
 
 <script>
+// ── URL CSV ──
 const CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQQctcyUS2x20VvnLt9nTMAGBMqeUnrafI-mak_1jxVcBFHOPTF7XxY9v-O8ACAQ1tLDOXBODOLVxLY/pub?output=csv';
+
+// ── COLUNAS (0-based) ──
 const I = {
-  DATA:0,HORA:1,CICLOS:2,T_SUB:3,
-  SUB_START:4,SUB_END:103,
-  M1_START:104,M1_END:113,M2_START:114,M2_END:123,M3_START:124,M3_END:133,
-  M4_START:134,M4_END:143,M5_START:144,M5_END:153,
-  DES_START:154,DES_END:163,T_DES:164,T_ATIVO:165,T_TOTAL:166,
-  BUCHA:167,CARGA_ASSENTO:168,CARGA_ENCOSTO:169,MOLA:170
+  DATA:0, HORA:1, CICLOS:2, T_SUB:3,
+  SUB_START:4,   SUB_END:103,
+  M1_START:104,  M1_END:113,
+  M2_START:114,  M2_END:123,
+  M3_START:124,  M3_END:133,
+  M4_START:134,  M4_END:143,
+  M5_START:144,  M5_END:153,
+  DES_START:154, DES_END:163,
+  T_DES:164, T_ATIVO:165, T_TOTAL:166,
+  BUCHA:167, CARGA_ASSENTO:168, CARGA_ENCOSTO:169, MOLA:170
 };
-// ── LIMIAR: motor ativo acima de 0.8 A ──
+
+// Limiar de corrente para considerar motor ativo na subida
 const LIMIAR_ATIVO = 0.8;
 
-let DATA=[], CH={}, TM=null, BUCHA_CHANGES=[];
+let DATA = [], CH = {}, TM = null;
 
-function parseCSV(txt){
-  const lines=txt.trim().split('\n');
-  return lines.slice(1).filter(l=>l.trim()).map(line=>{
-    const vals=[];let cur='',inQ=false;
-    for(const ch of line){if(ch==='"')inQ=!inQ;else if(ch===','&&!inQ){vals.push(cur.trim());cur='';}else cur+=ch;}
+// ── PARSERS ──
+function parseCSV(txt) {
+  const lines = txt.trim().split('\n');
+  return lines.slice(1).filter(l => l.trim()).map(line => {
+    const vals = []; let cur = '', inQ = false;
+    for (const ch of line) {
+      if (ch === '"') inQ = !inQ;
+      else if (ch === ',' && !inQ) { vals.push(cur.trim()); cur = ''; }
+      else cur += ch;
+    }
     vals.push(cur.trim());
-    return vals.map(v=>{const clean=v.replace(/^"|"$/g,'').trim();const n=Number(clean);return(clean!==''&&!isNaN(n)&&String(n)===clean)?n:clean;});
-  });
-}
-const g=(row,i)=>row[i]??null;
-const num=(row,i)=>{const v=g(row,i);return typeof v==='number'?v:null;};
-const str=(row,i)=>{const v=g(row,i);return v!==null&&v!==''?String(v):null;};
-const f=(v,d=2)=>typeof v==='number'&&!isNaN(v)?v.toFixed(d):'—';
-const avg=a=>a.length?a.reduce((x,y)=>x+y,0)/a.length:0;
-const fmtMin=v=>{if(typeof v!=='number'||isNaN(v))return'—';const m=v/60;if(m<60)return`${Math.round(m)} min`;const h=Math.floor(m/60),mn=Math.round(m%60);return mn>0?`${h}h ${mn}min`:`${h}h`;};
-const fmtHora=v=>{if(typeof v!=='number'||isNaN(v))return'—';if(v<60)return`${Math.round(v)} min`;const h=Math.floor(v/60),mn=Math.round(v%60);return mn>0?`${h}h ${mn}min`:`${h}h`;};
-
-function getSub(row){return Array.from({length:100},(_,i)=>num(row,I.SUB_START+i)).filter(v=>v!==null);}
-// Retorna apenas amostras com motor ativo (>= LIMIAR_ATIVO)
-function getSubAtivo(row){return getSub(row).filter(v=>v>=LIMIAR_ATIVO);}
-function getDes(row){return Array.from({length:10},(_,i)=>num(row,I.DES_START+i)).filter(v=>v!==null);}
-function getMin(row,minIdx){const starts=[I.M1_START,I.M2_START,I.M3_START,I.M4_START,I.M5_START];const s=starts[minIdx-1];return Array.from({length:10},(_,i)=>num(row,s+i)).filter(v=>v!==null);}
-function getAllPausa(row){const out=[];for(let m=1;m<=5;m++)out.push(...getMin(row,m));return out;}
-
-function detectBuchaChanges(){
-  BUCHA_CHANGES=[];
-  let lastBucha=null;
-  DATA.forEach((row,idx)=>{
-    const b=str(row,I.BUCHA);
-    if(b&&b!==lastBucha){if(lastBucha!==null)BUCHA_CHANGES.push({idx,fromBucha:lastBucha,toBucha:b,ciclo:num(row,I.CICLOS)});lastBucha=b;}
-  });
-}
-
-function enrich(data){
-  data.forEach(row=>{
-    const vs=getSub(row),vd=getDes(row),vsAtivo=getSubAtivo(row);
-    // _mS = média apenas das amostras com motor ativo (>= 0.8A)
-    row._mS=vsAtivo.length?avg(vsAtivo):null;
-    row._nAtivo=vsAtivo.length;
-    row._mD=vd.length?avg(vd):null;
-    row._pS=vs.length?Math.max(...vs):null;
-    row._pD=vd.length?Math.max(...vd):null;
-    row._pausaAvg=[];row._pausaMax=[];row._pausaGlobal=null;
-    for(let m=1;m<=5;m++){const vm=getMin(row,m);row._pausaAvg.push(vm.length?avg(vm):null);row._pausaMax.push(vm.length?Math.max(...vm):null);}
-    const allP=getAllPausa(row).filter(v=>v!==null);
-    row._pausaGlobal=allP.length?Math.max(...allP):null;
-  });
-}
-
-function goTab(id,el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active');document.getElementById('p-'+id).classList.add('active');
-  if(id==='tendencia')renderTendencia();
-  if(id==='tempo')renderTempo();
-  if(id==='comparador')renderComparador();
-  if(id==='pausa'){renderPausa();renderPausaTendencia();}
-}
-
-const chartColors={blu:'#2563eb',grn:'#16a34a',amb:'#d97706',pur:'#7c3aed',cya:'#0891b2',red:'#dc2626'};
-const minColors=[chartColors.blu,chartColors.grn,chartColors.amb,chartColors.pur,chartColors.cya];
-
-// Plugin: desenha linha vertical laranja nas trocas de bucha
-const buchaLinePlugin={
-  id:'buchaLine',
-  afterDraw(chart){
-    const buchaDs=chart.data.datasets.filter(ds=>ds._buchaChangeIdx!==undefined);
-    if(!buchaDs.length)return;
-    const ctx=chart.ctx,xAxis=chart.scales.x,yAxis=chart.scales.y;
-    buchaDs.forEach(ds=>{
-      const idx=ds._buchaChangeIdx;
-      if(idx===undefined||idx<0)return;
-      const x=xAxis.getPixelForIndex(idx);
-      if(!x)return;
-      ctx.save();
-      ctx.strokeStyle='#d97706';ctx.lineWidth=2;ctx.setLineDash([6,4]);ctx.globalAlpha=0.9;
-      ctx.beginPath();ctx.moveTo(x,yAxis.top);ctx.lineTo(x,yAxis.bottom);ctx.stroke();
-      ctx.setLineDash([]);ctx.globalAlpha=1;ctx.fillStyle='#d97706';
-      ctx.font='600 9px Inter,sans-serif';ctx.textAlign='left';
-      ctx.fillText('⚙ '+ds._buchaToBucha.split(':')[0],x+4,yAxis.top+12);
-      ctx.restore();
+    return vals.map(v => {
+      const clean = v.replace(/^"|"$/g, '').trim();
+      const n = Number(clean);
+      return (clean !== '' && !isNaN(n) && String(n) === clean) ? n : clean;
     });
-  }
-};
-Chart.register(buchaLinePlugin);
-
-// Gera datasets fantasma para o plugin marcar as trocas de bucha
-function buchaBandsDatasets(rowsRef){
-  if(!BUCHA_CHANGES.length)return[];
-  return BUCHA_CHANGES.map(chg=>{
-    const dsIdx=rowsRef.findIndex(r=>{const c=num(r,I.CICLOS);return c!==null&&c>=chg.ciclo&&str(r,I.BUCHA)===chg.toBucha;});
-    return{label:'⚙ '+chg.toBucha.split(':')[0],data:rowsRef.map(()=>null),borderColor:'transparent',pointRadius:0,fill:false,_buchaChangeIdx:dsIdx,_buchaToBucha:chg.toBucha};
   });
 }
 
-function CO(extra={}){return{responsive:true,maintainAspectRatio:false,animation:{duration:400},plugins:{legend:{labels:{color:'#4b5263',font:{family:'Inter',size:10},boxWidth:10,padding:12,filter:item=>!item.text.startsWith('⚙')}},tooltip:{backgroundColor:'#ffffff',borderColor:'#e2e5ea',borderWidth:1,titleColor:'#1a1d23',bodyColor:'#4b5263',titleFont:{family:'Inter',size:11},bodyFont:{family:'Inter',size:10},padding:10,callbacks:{label:ctx=>{const v=ctx.parsed.y;return v!==null?` ${ctx.dataset.label}: ${typeof v==='number'?v.toFixed(3)+' A':v}`:null;}}}},scales:{x:{ticks:{color:'#8c93a3',font:{family:'Inter',size:9},maxTicksLimit:20},grid:{color:'#e2e5ea'},border:{display:false}},y:{ticks:{color:'#8c93a3',font:{family:'Inter',size:9}},grid:{color:'#e2e5ea'},border:{display:false}}},...extra};}
+const g   = (row, i) => row[i] ?? null;
+const num = (row, i) => { const v = g(row,i); return typeof v === 'number' ? v : null; };
+const str = (row, i) => { const v = g(row,i); return v !== null && v !== '' ? String(v) : null; };
+const f   = (v, d=2) => typeof v === 'number' && !isNaN(v) ? v.toFixed(d) : '—';
+const avg = a => a.length ? a.reduce((x,y) => x+y, 0) / a.length : 0;
+const fmtMin = v => {
+  if (typeof v !== 'number' || isNaN(v)) return '—';
+  const m = v / 60;
+  if (m < 60) return `${Math.round(m)} min`;
+  const h = Math.floor(m/60), mn = Math.round(m%60);
+  return mn > 0 ? `${h}h ${mn}min` : `${h}h`;
+};
+const fmtHora = v => {
+  if (typeof v !== 'number' || isNaN(v)) return '—';
+  if (v < 60) return `${Math.round(v)} min`;
+  const h = Math.floor(v/60), mn = Math.round(v%60);
+  return mn > 0 ? `${h}h ${mn}min` : `${h}h`;
+};
 
-function COT(rowsRef,extra={}){return{responsive:true,maintainAspectRatio:false,animation:{duration:400},plugins:{legend:{labels:{color:'#4b5263',font:{family:'Inter',size:10},boxWidth:10,padding:12,filter:item=>!item.text.startsWith('⚙')}},tooltip:{backgroundColor:'#ffffff',borderColor:'#cdd1d9',borderWidth:1,titleColor:'#1a1d23',bodyColor:'#4b5263',footerColor:'#8c93a3',titleFont:{family:'Inter',size:11,weight:'600'},bodyFont:{family:'Inter',size:10},footerFont:{family:'Inter',size:9},padding:12,boxPadding:4,filter:item=>!item.dataset.label?.startsWith('⚙'),callbacks:{title:items=>{const idx=items[0].dataIndex;const row=rowsRef[idx];if(!row)return`Ciclo ${items[0].label}`;return`Ciclo ${num(row,I.CICLOS)??items[0].label}`;},label:ctx=>{if(ctx.dataset.label?.startsWith('⚙'))return null;const v=ctx.parsed.y;if(v===null||v===undefined)return null;return` ${ctx.dataset.label}: ${typeof v==='number'?v.toFixed(3)+' A':v}`;},footer:items=>{const idx=items[0].dataIndex;const row=rowsRef[idx];if(!row)return[];const d=String(g(row,I.DATA)||'').trim();const h=String(g(row,I.HORA)||'').trim();const lines=[];if(d)lines.push('Data: '+d);if(h)lines.push('Hora: '+h);const b=str(row,I.BUCHA);if(b)lines.push('Bucha: '+b.split(':')[0]);return lines;}}}},scales:{x:{ticks:{color:'#8c93a3',font:{family:'Inter',size:9},maxTicksLimit:20},grid:{color:'#e2e5ea'},border:{display:false}},y:{ticks:{color:'#8c93a3',font:{family:'Inter',size:9}},grid:{color:'#e2e5ea'},border:{display:false}}},...extra};}
-
-function dc(id){if(CH[id]){CH[id].destroy();delete CH[id];}}
-
-function populateSelects(){
-  const opts=DATA.map((row,i)=>`<option value="${i}">${num(row,I.CICLOS)??i+1}</option>`).join('');
-  document.getElementById('selCiclo').innerHTML=opts;document.getElementById('selCiclo').value=DATA.length-1;
-  document.getElementById('selPausa').innerHTML=opts;document.getElementById('selPausa').value=DATA.length-1;
-  const optsC=DATA.map((row,i)=>`<option value="${i}">Ciclo ${num(row,I.CICLOS)??i+1}</option>`).join('');
-  ['cmpA','cmpB'].forEach(id=>{document.getElementById(id).innerHTML=optsC;});
-  document.getElementById('cmpA').value=0;document.getElementById('cmpB').value=DATA.length-1;
-  document.getElementById('cmpC').innerHTML='<option value="">— nenhum —</option>'+optsC;
+// ── EXTRATORES ──
+function getSub(row) {
+  return Array.from({length:100}, (_,i) => num(row, I.SUB_START+i)).filter(v => v !== null);
+}
+// Somente amostras com motor ativo (>= LIMIAR_ATIVO)
+function getSubAtivo(row) {
+  return getSub(row).filter(v => v >= LIMIAR_ATIVO);
+}
+function getDes(row) {
+  return Array.from({length:10}, (_,i) => num(row, I.DES_START+i)).filter(v => v !== null);
+}
+function getMin(row, minIdx) {
+  const starts = [I.M1_START, I.M2_START, I.M3_START, I.M4_START, I.M5_START];
+  const s = starts[minIdx-1];
+  return Array.from({length:10}, (_,i) => num(row, s+i)).filter(v => v !== null);
+}
+function getAllPausa(row) {
+  const out = [];
+  for (let m = 1; m <= 5; m++) out.push(...getMin(row, m));
+  return out;
 }
 
-function renderBuchaBanner(containerId){
-  const el=document.getElementById(containerId);if(!el)return;
-  if(!BUCHA_CHANGES.length){el.innerHTML='';return;}
-  const items=BUCHA_CHANGES.map(chg=>`<span style="margin-right:16px"><strong>Ciclo ${chg.ciclo}</strong>: ${chg.fromBucha?chg.fromBucha.split(':')[0]:'?'} → <strong>${chg.toBucha?chg.toBucha.split(':')[0]:'?'}</strong></span>`).join('');
-  el.innerHTML=`<div class="bucha-banner"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="6"/><path d="M8 5v3l2 2"/></svg><strong>Trocas de bucha detectadas:</strong> ${items}</div>`;
+// ── HISTÓRICO DE BUCHAS ──
+// Retorna array de { ciclo, bucha } com cada entrada única de bucha ao longo do ensaio
+function getBuchaHistory() {
+  const hist = [];
+  let last = null;
+  DATA.forEach(row => {
+    const b = str(row, I.BUCHA);
+    const c = num(row, I.CICLOS);
+    if (b && b !== last) {
+      hist.push({ ciclo: c, bucha: b });
+      last = b;
+    }
+  });
+  return hist;
 }
 
-function renderResumo(){
-  if(!DATA.length)return;
-  const last=DATA[DATA.length-1];
-  const n=DATA.filter(r=>r._mS!==null).length;
-  document.getElementById('kpiGrid').innerHTML=`
-    <div class="kpi"><div class="kpi-lbl">Ciclos Realizados</div><div class="kpi-val">${num(last,I.CICLOS)??'—'}<span class="kpi-unit">cx</span></div><div class="kpi-sub">${n} leituras registradas</div></div>
+// ── ENRICH ──
+function enrich(data) {
+  data.forEach(row => {
+    const vs = getSub(row), vd = getDes(row);
+    const vsAtivo = getSubAtivo(row);
+    // _mS = média apenas das amostras ativas (>= LIMIAR_ATIVO)
+    row._mS = vsAtivo.length ? avg(vsAtivo) : null;
+    row._nAtivo = vsAtivo.length;
+    row._mD = vd.length ? avg(vd) : null;
+    row._pS = vs.length ? Math.max(...vs) : null;
+    row._pD = vd.length ? Math.max(...vd) : null;
+    row._pausaAvg = [];
+    row._pausaMax = [];
+    row._pausaGlobal = null;
+    for (let m = 1; m <= 5; m++) {
+      const vm = getMin(row, m);
+      row._pausaAvg.push(vm.length ? avg(vm) : null);
+      row._pausaMax.push(vm.length ? Math.max(...vm) : null);
+    }
+    const allP = getAllPausa(row).filter(v => v !== null);
+    row._pausaGlobal = allP.length ? Math.max(...allP) : null;
+  });
+}
+
+// ── NAV ──
+function goTab(id, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('p-'+id).classList.add('active');
+  if (id === 'tendencia') renderTendencia();
+  if (id === 'tempo')     renderTempo();
+  if (id === 'comparador') renderComparador();
+  if (id === 'pausa')     { renderPausa(); renderPausaTendencia(); }
+}
+
+// ── CHART DEFAULTS ──
+const chartColors = {
+  blu: '#2563eb', grn: '#16a34a', amb: '#d97706',
+  pur: '#7c3aed', cya: '#0891b2', red: '#dc2626'
+};
+const minColors = [chartColors.blu, chartColors.grn, chartColors.amb, chartColors.pur, chartColors.cya];
+
+function CO(extra = {}) {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    animation: {duration: 400},
+    plugins: {
+      legend: {
+        labels: { color: '#4b5263', font: {family:'Inter',size:10}, boxWidth:10, padding:12 }
+      },
+      tooltip: {
+        backgroundColor: '#ffffff', borderColor: '#e2e5ea', borderWidth: 1,
+        titleColor: '#1a1d23', bodyColor: '#4b5263',
+        titleFont: {family:'Inter',size:11}, bodyFont: {family:'Inter',size:10}, padding: 10,
+        callbacks: {
+          label: ctx => {
+            const v = ctx.parsed.y;
+            return v !== null ? ` ${ctx.dataset.label}: ${typeof v === 'number' ? v.toFixed(3) + ' A' : v}` : null;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { ticks:{color:'#8c93a3',font:{family:'Inter',size:9},maxTicksLimit:20}, grid:{color:'#e2e5ea'}, border:{display:false} },
+      y: { ticks:{color:'#8c93a3',font:{family:'Inter',size:9}}, grid:{color:'#e2e5ea'}, border:{display:false} }
+    },
+    ...extra
+  };
+}
+
+function COT(rowsRef, extra = {}) {
+  return {
+    responsive: true, maintainAspectRatio: false,
+    animation: {duration: 400},
+    plugins: {
+      legend: {
+        labels: { color: '#4b5263', font: {family:'Inter',size:10}, boxWidth:10, padding:12 }
+      },
+      tooltip: {
+        backgroundColor: '#ffffff', borderColor: '#cdd1d9', borderWidth: 1,
+        titleColor: '#1a1d23', bodyColor: '#4b5263', footerColor: '#8c93a3',
+        titleFont: {family:'Inter',size:11,weight:'600'}, bodyFont:{family:'Inter',size:10},
+        footerFont: {family:'Inter',size:9}, padding: 12, boxPadding: 4,
+        callbacks: {
+          title: items => {
+            const idx = items[0].dataIndex;
+            const row = rowsRef[idx];
+            if (!row) return `Ciclo ${items[0].label}`;
+            return `Ciclo ${num(row, I.CICLOS) ?? items[0].label}`;
+          },
+          label: ctx => {
+            const v = ctx.parsed.y;
+            if (v === null || v === undefined) return null;
+            return ` ${ctx.dataset.label}: ${typeof v === 'number' ? v.toFixed(3) + ' A' : v}`;
+          },
+          footer: items => {
+            const idx = items[0].dataIndex;
+            const row = rowsRef[idx];
+            if (!row) return [];
+            const d = String(g(row, I.DATA) || '').trim();
+            const h = String(g(row, I.HORA) || '').trim();
+            const lines = [];
+            if (d) lines.push('Data: ' + d);
+            if (h) lines.push('Hora: ' + h);
+            return lines;
+          }
+        }
+      }
+    },
+    scales: {
+      x: { ticks:{color:'#8c93a3',font:{family:'Inter',size:9},maxTicksLimit:20}, grid:{color:'#e2e5ea'}, border:{display:false} },
+      y: { ticks:{color:'#8c93a3',font:{family:'Inter',size:9}}, grid:{color:'#e2e5ea'}, border:{display:false} }
+    },
+    ...extra
+  };
+}
+
+function dc(id) { if (CH[id]) { CH[id].destroy(); delete CH[id]; } }
+
+// ── SELECTS ──
+function populateSelects() {
+  const opts = DATA.map((row,i) => `<option value="${i}">${num(row,I.CICLOS) ?? i+1}</option>`).join('');
+  document.getElementById('selCiclo').innerHTML = opts;
+  document.getElementById('selCiclo').value = DATA.length-1;
+  document.getElementById('selPausa').innerHTML = opts;
+  document.getElementById('selPausa').value = DATA.length-1;
+  const optsC = DATA.map((row,i) => `<option value="${i}">Ciclo ${num(row,I.CICLOS) ?? i+1}</option>`).join('');
+  ['cmpA','cmpB'].forEach(id => { document.getElementById(id).innerHTML = optsC; });
+  document.getElementById('cmpA').value = 0;
+  document.getElementById('cmpB').value = DATA.length-1;
+  document.getElementById('cmpC').innerHTML = '<option value="">— nenhum —</option>' + optsC;
+}
+
+// ════════════════════════════════
+// RESUMO
+// ════════════════════════════════
+function renderResumo() {
+  if (!DATA.length) return;
+  const last = DATA[DATA.length-1];
+  const n = DATA.filter(r => r._mS !== null).length;
+
+  document.getElementById('kpiGrid').innerHTML = `
+    <div class="kpi"><div class="kpi-lbl">Ciclos Realizados</div><div class="kpi-val">${num(last,I.CICLOS) ?? '—'}<span class="kpi-unit">cx</span></div><div class="kpi-sub">${n} leituras registradas</div></div>
     <div class="kpi"><div class="kpi-lbl">T. Total Subindo</div><div class="kpi-val">${fmtMin(num(last,I.T_SUB))}</div><div class="kpi-sub">acumulado</div></div>
     <div class="kpi"><div class="kpi-lbl">T. Total Descendo</div><div class="kpi-val">${fmtMin(num(last,I.T_DES))}</div><div class="kpi-sub">acumulado</div></div>
     <div class="kpi"><div class="kpi-lbl">Motor Ativo</div><div class="kpi-val">${fmtMin(num(last,I.T_ATIVO))}</div><div class="kpi-sub">sem pausa</div></div>
     <div class="kpi"><div class="kpi-lbl">Tempo Total Teste</div><div class="kpi-val">${fmtHora(num(last,I.T_TOTAL))}</div><div class="kpi-sub">inclui pausa + descanso</div></div>`;
-  const setupRow=DATA.slice().reverse().find(r=>str(r,I.BUCHA)||str(r,I.CARGA_ASSENTO))||last;
-  document.getElementById('setupBar').innerHTML=`
+
+  const setupRow = DATA.slice().reverse().find(r => str(r,I.BUCHA) || str(r,I.CARGA_ASSENTO)) || last;
+  document.getElementById('setupBar').innerHTML = `
     <div><div class="setup-item-lbl">Material Bucha</div><div class="setup-item-val">${str(setupRow,I.BUCHA)||'—'}</div></div>
     <div class="setup-divider"></div>
     <div><div class="setup-item-lbl">Carga Assento</div><div class="setup-item-val">${str(setupRow,I.CARGA_ASSENTO)||'—'}</div></div>
@@ -483,64 +672,155 @@ function renderResumo(){
     <div><div class="setup-item-lbl">Carga Encosto</div><div class="setup-item-val">${str(setupRow,I.CARGA_ENCOSTO)||'—'}</div></div>
     <div class="setup-divider"></div>
     <div><div class="setup-item-lbl">Mola a Gás</div><div class="setup-item-val">${str(setupRow,I.MOLA)||'—'}</div></div>`;
-  renderBuchaBanner('buchaBannerResumo');
-  // Mapa de índices que são trocas de bucha
-  const buchaChangeRowIdxSet=new Set();
-  BUCHA_CHANGES.forEach(chg=>{
-    const found=DATA.findIndex(r=>num(r,I.CICLOS)>=chg.ciclo&&str(r,I.BUCHA)===chg.toBucha);
-    if(found>=0)buchaChangeRowIdxSet.add(found);
-  });
-  const thead='<tr><th>Ciclos</th><th>Data</th><th>Hora</th><th>Bucha</th><th>Média ↑(A)★</th><th>N Ativas</th><th>Pico ↑(A)</th><th>Pausa Max(A)</th><th>Média ↓(A)</th><th>T.Sub</th><th>T.Des</th><th>T.Ativo</th><th>T.Total</th></tr>';
-  const tbody=DATA.slice(-15).reverse().map(row=>{
-    const rowIdx=DATA.indexOf(row);
-    const isBuchaChange=buchaChangeRowIdxSet.has(rowIdx);
-    const bStr=str(row,I.BUCHA);const bShort=bStr?bStr.split(':')[0]:'—';
-    return`<tr class="${isBuchaChange?'bucha-change-row':''}">
+
+  // Histórico de buchas
+  const hist = getBuchaHistory();
+  const histEl = document.getElementById('buchaHist');
+  const histList = document.getElementById('buchaHistList');
+  if (hist.length > 0) {
+    histEl.style.display = 'block';
+    histList.innerHTML = hist.map((item, idx) => `
+      <div class="bucha-hist-item">
+        ${idx > 0 ? '<span class="bucha-hist-arrow">→</span>' : ''}
+        <span class="bucha-hist-ciclo">Ciclo ${item.ciclo ?? '?'}</span>
+        <span class="bucha-hist-name">${item.bucha}</span>
+      </div>`).join('');
+  } else {
+    histEl.style.display = 'none';
+  }
+
+  const thead = '<tr><th>Ciclos</th><th>Data</th><th>Hora</th><th>Média ↑(A)★</th><th>N Ativas</th><th>Pico ↑(A)</th><th>Pausa Max(A)</th><th>Média ↓(A)</th><th>T.Sub</th><th>T.Des</th><th>T.Ativo</th><th>T.Total</th></tr>';
+  const tbody = DATA.slice(-15).reverse().map(row => `
+    <tr>
       <td class="hi">${num(row,I.CICLOS)??'—'}</td>
-      <td>${g(row,I.DATA)||'—'}</td><td>${g(row,I.HORA)||'—'}</td>
-      <td style="${isBuchaChange?'color:var(--amb);font-weight:600':''}">${isBuchaChange?'⚙ ':''} ${bShort}</td>
+      <td>${g(row,I.DATA)||'—'}</td>
+      <td>${g(row,I.HORA)||'—'}</td>
       <td class="acc">${f(row._mS,3)}</td>
-      <td style="color:var(--txt3)">${row._nAtivo??'—'}/100</td>
+      <td style="color:var(--txt3)">${row._nAtivo ?? '—'}/100</td>
       <td>${f(row._pS,3)}</td>
       <td class="${row._pausaGlobal!==null&&row._pausaGlobal>0.05?'amb':'grn'}">${f(row._pausaGlobal,3)}</td>
       <td>${f(row._mD,3)}</td>
-      <td>${fmtMin(num(row,I.T_SUB))}</td><td>${fmtMin(num(row,I.T_DES))}</td>
-      <td>${fmtMin(num(row,I.T_ATIVO))}</td><td>${fmtHora(num(row,I.T_TOTAL))}</td>
-    </tr>`;}).join('');
-  document.getElementById('tableBox').innerHTML=`<table><thead>${thead}</thead><tbody>${tbody}</tbody></table>
+      <td>${fmtMin(num(row,I.T_SUB))}</td>
+      <td>${fmtMin(num(row,I.T_DES))}</td>
+      <td>${fmtMin(num(row,I.T_ATIVO))}</td>
+      <td>${fmtHora(num(row,I.T_TOTAL))}</td>
+    </tr>`).join('');
+  document.getElementById('tableBox').innerHTML = `
+    <table><thead>${thead}</thead><tbody>${tbody}</tbody></table>
     <div style="padding:8px 12px;font-family:var(--mono);font-size:9px;color:var(--txt3);border-top:1px solid var(--brd)">
-      ★ Corrente média de subida calculada apenas com amostras ≥ ${LIMIAR_ATIVO} A (motor ativo) · N Ativas = quantidade de amostras usadas no cálculo
+      ★ Média de subida calculada apenas com amostras ≥ ${LIMIAR_ATIVO} A (motor ativo) · N Ativas = amostras usadas no cálculo
     </div>`;
 }
 
-function renderPerfil(){
-  const idx=parseInt(document.getElementById('selCiclo').value);
-  const row=DATA[idx];if(!row)return;
-  const vS=getSub(row),vsAtivo=getSubAtivo(row),vM=[1,2,3,4,5].map(m=>getMin(row,m)),vD=getDes(row);
-  const nS=vS.length,nM=vM.reduce((s,a)=>s+a.length,0),nD=vD.length,total=nS+nM+nD;
-  const labels=[...vS.map((_,i)=>`S${i+1}`),...[1,2,3,4,5].flatMap(m=>vM[m-1].map((_,i)=>`M${m}.${i+1}`)),...vD.map((_,i)=>`D${i+1}`)];
-  const sparse=(values,startIdx)=>{const arr=new Array(total).fill(null);values.forEach((v,i)=>{arr[startIdx+i]=v;});return arr;};
-  const startS=0,startM=[0,1,2,3,4].map(m=>nS+vM.slice(0,m).reduce((s,a)=>s+a.length,0)),startD=nS+nM;
-  const mS=vsAtivo.length?avg(vsAtivo):null;
-  const mD=vD.length?avg(vD):null;
-  const mPausa=vM.flat().length?avg(vM.flat()):null;
-  const pS=vS.length?Math.max(...vS):null,pD=vD.length?Math.max(...vD):null,pP=vM.flat().length?Math.max(...vM.flat()):null;
-  const cx=num(row,I.CICLOS)??idx+1;
-  document.getElementById('perfilTitle').textContent=`Ciclo ${cx}  ·  ${g(row,I.DATA)||''}  ${g(row,I.HORA)||''}  ·  ${vsAtivo.length}/100 amostras ativas (≥${LIMIAR_ATIVO}A)`;
-  const datasets=[
-    {label:'↑ Subindo (A)',data:sparse(vS,startS),borderColor:chartColors.blu,backgroundColor:chartColors.blu+'18',tension:.3,pointRadius:2,pointHoverRadius:5,borderWidth:1.8,fill:true,spanGaps:false},
-    ...[0,1,2,3,4].map(m=>({label:`⏸ MIN${m+1} (A)`,data:vM[m].length?sparse(vM[m],startM[m]):new Array(total).fill(null),borderColor:minColors[m],backgroundColor:minColors[m]+'18',tension:.3,pointRadius:3,pointHoverRadius:6,borderWidth:1.5,fill:false,spanGaps:false})),
-    {label:'↓ Descendo (A)',data:sparse(vD,startD),borderColor:chartColors.grn,backgroundColor:chartColors.grn+'18',tension:.3,pointRadius:3,pointHoverRadius:6,borderWidth:1.8,fill:true,spanGaps:false},
-    ...(mS!==null?[{label:`Média ↑ ativa ${f(mS,3)}A (${vsAtivo.length}/100)`,data:(()=>{const a=new Array(total).fill(null);vS.forEach((_,i)=>{a[startS+i]=mS;});return a;})(),borderColor:chartColors.blu+'55',borderDash:[4,4],pointRadius:0,borderWidth:1.5,spanGaps:false,fill:false}]:[]),
-    ...(mPausa!==null?[{label:`Média ⏸ ${f(mPausa,3)}A`,data:(()=>{const a=new Array(total).fill(null);[0,1,2,3,4].forEach(m=>{vM[m].forEach((_,i)=>{a[startM[m]+i]=mPausa;});});return a;})(),borderColor:chartColors.amb+'66',borderDash:[4,4],pointRadius:0,borderWidth:1,spanGaps:false,fill:false}]:[]),
-    ...(mD!==null?[{label:`Média ↓ ${f(mD,3)}A`,data:(()=>{const a=new Array(total).fill(null);vD.forEach((_,i)=>{a[startD+i]=mD;});return a;})(),borderColor:chartColors.grn+'55',borderDash:[4,4],pointRadius:0,borderWidth:1,spanGaps:false,fill:false}]:[]),
+// ════════════════════════════════
+// PERFIL
+// ════════════════════════════════
+function renderPerfil() {
+  const idx = parseInt(document.getElementById('selCiclo').value);
+  const row = DATA[idx]; if (!row) return;
+
+  const vS = getSub(row);
+  const vsAtivo = getSubAtivo(row);
+  const vM = [1,2,3,4,5].map(m => getMin(row,m));
+  const vD = getDes(row);
+
+  const nS = vS.length, nM = vM.reduce((s,a) => s+a.length, 0), nD = vD.length;
+  const total = nS + nM + nD;
+
+  const labels = [
+    ...vS.map((_,i)  => `S${i+1}`),
+    ...[1,2,3,4,5].flatMap(m => vM[m-1].map((_,i) => `M${m}.${i+1}`)),
+    ...vD.map((_,i)  => `D${i+1}`)
   ];
+
+  const sparse = (values, startIdx) => {
+    const arr = new Array(total).fill(null);
+    values.forEach((v,i) => { arr[startIdx+i] = v; });
+    return arr;
+  };
+
+  const startS = 0;
+  const startM = [0,1,2,3,4].map(m => nS + vM.slice(0,m).reduce((s,a)=>s+a.length,0));
+  const startD = nS + nM;
+
+  // Média de subida: apenas amostras ativas
+  const mS  = vsAtivo.length ? avg(vsAtivo) : null;
+  const mD  = vD.length  ? avg(vD)  : null;
+  const mPausa = vM.flat().length ? avg(vM.flat()) : null;
+  const pS = vS.length  ? Math.max(...vS)  : null;
+  const pD = vD.length  ? Math.max(...vD)  : null;
+  const pP = vM.flat().length ? Math.max(...vM.flat()) : null;
+
+  const cx = num(row, I.CICLOS) ?? idx+1;
+  document.getElementById('perfilTitle').textContent =
+    `Ciclo ${cx}  ·  ${g(row,I.DATA)||''}  ${g(row,I.HORA)||''}  ·  ${vsAtivo.length}/100 amostras ativas`;
+
+  const datasets = [
+    { label:'↑ Subindo (A)', data:sparse(vS,startS), borderColor:chartColors.blu, backgroundColor:chartColors.blu+'18', tension:.3, pointRadius:2, pointHoverRadius:5, borderWidth:1.8, fill:true, spanGaps:false },
+    ...[0,1,2,3,4].map(m => ({ label:`⏸ MIN${m+1} (A)`, data:vM[m].length?sparse(vM[m],startM[m]):new Array(total).fill(null), borderColor:minColors[m], backgroundColor:minColors[m]+'18', tension:.3, pointRadius:3, pointHoverRadius:6, borderWidth:1.5, fill:false, spanGaps:false })),
+    { label:'↓ Descendo (A)', data:sparse(vD,startD), borderColor:chartColors.grn, backgroundColor:chartColors.grn+'18', tension:.3, pointRadius:3, pointHoverRadius:6, borderWidth:1.8, fill:true, spanGaps:false },
+    ...(mS !== null ? [{ label:`Média ↑ ativa ${f(mS,3)}A (${vsAtivo.length}/100)`, data:(()=>{const a=new Array(total).fill(null);vS.forEach((_,i)=>{a[startS+i]=mS;});return a;})(), borderColor:chartColors.blu+'55', borderDash:[4,4], pointRadius:0, borderWidth:1.5, spanGaps:false, fill:false }] : []),
+    ...(mPausa !== null ? [{ label:`Média ⏸ ${f(mPausa,3)}A`, data:(()=>{const a=new Array(total).fill(null);[0,1,2,3,4].forEach(m=>{vM[m].forEach((_,i)=>{a[startM[m]+i]=mPausa;});});return a;})(), borderColor:chartColors.amb+'66', borderDash:[4,4], pointRadius:0, borderWidth:1, spanGaps:false, fill:false }] : []),
+    ...(mD !== null ? [{ label:`Média ↓ ${f(mD,3)}A`, data:(()=>{const a=new Array(total).fill(null);vD.forEach((_,i)=>{a[startD+i]=mD;});return a;})(), borderColor:chartColors.grn+'55', borderDash:[4,4], pointRadius:0, borderWidth:1, spanGaps:false, fill:false }] : []),
+  ];
+
   dc('cPerfil');
-  CH.cPerfil=new Chart(document.getElementById('cPerfil'),{type:'line',data:{labels,datasets},options:{...CO(),plugins:{...CO().plugins,tooltip:{...CO().plugins.tooltip,callbacks:{title:items=>{const lbl=items[0].label;if(lbl.startsWith('S'))return`Subida — Amostra ${lbl}`;if(lbl.startsWith('M'))return`Pausa — ${lbl.replace('.',' Amostra ')}`;if(lbl.startsWith('D'))return`Descida — Amostra ${lbl}`;return lbl;},label:ctx=>{const v=ctx.parsed.y;if(v===null)return null;const activeStr=ctx.dataset.label?.startsWith('↑')&&v!==null?(v>=LIMIAR_ATIVO?' ✓ ativo':' — inativo'):'';return` ${ctx.dataset.label}: ${typeof v==='number'?v.toFixed(3)+' A':v}${activeStr}`;},footer:()=>{const d=String(g(row,I.DATA)||'').trim();const h=String(g(row,I.HORA)||'').trim();const lines=[];if(d)lines.push('Data: '+d);if(h)lines.push('Hora: '+h);lines.push(`Amostras ativas ↑: ${vsAtivo.length}/100 (≥${LIMIAR_ATIVO}A)`);return lines;}}}},scales:{x:{ticks:{color:ctx=>{const lbl=labels[ctx.index]??'';if(lbl.startsWith('M'))return chartColors.amb;if(lbl.startsWith('D'))return chartColors.grn;return'#8c93a3';},font:{family:'Inter',size:8},maxTicksLimit:32,maxRotation:0},grid:{color:ctx=>{const lbl=labels[ctx.index]??'';return(lbl==='M1.1'||lbl==='D1')?'#cdd1d9':'#e2e5ea';},lineWidth:ctx=>{const lbl=labels[ctx.index]??'';return(lbl==='M1.1'||lbl==='D1')?2:1;}},border:{display:false}},y:{ticks:{color:'#8c93a3',font:{family:'Inter',size:9}},grid:{color:'#e2e5ea'},border:{display:false}}}}});
-  const dtS=idx>0?num(row,I.T_SUB)-num(DATA[idx-1],I.T_SUB):num(row,I.T_SUB);
-  const dtD=idx>0?num(row,I.T_DES)-num(DATA[idx-1],I.T_DES):num(row,I.T_DES);
-  document.getElementById('perfilStats').innerHTML=`
-    <div class="kpi"><div class="kpi-lbl">Média Subindo★</div><div class="kpi-val">${f(mS,3)}<span class="kpi-unit">A</span></div><div class="kpi-sub">${vsAtivo.length}/100 amostras ≥${LIMIAR_ATIVO}A</div></div>
+  CH.cPerfil = new Chart(document.getElementById('cPerfil'), {
+    type: 'line',
+    data: {labels, datasets},
+    options: {
+      ...CO(),
+      plugins: {
+        ...CO().plugins,
+        tooltip: {
+          ...CO().plugins.tooltip,
+          callbacks: {
+            title: items => {
+              const lbl = items[0].label;
+              if (lbl.startsWith('S'))  return `Subida — Amostra ${lbl}`;
+              if (lbl.startsWith('M'))  return `Pausa — ${lbl.replace('.',' Amostra ')}`;
+              if (lbl.startsWith('D'))  return `Descida — Amostra ${lbl}`;
+              return lbl;
+            },
+            label: ctx => {
+              const v = ctx.parsed.y;
+              if (v === null) return null;
+              const activeStr = ctx.dataset.label?.startsWith('↑') ? (v >= LIMIAR_ATIVO ? ' ✓' : ' —') : '';
+              return ` ${ctx.dataset.label}: ${typeof v==='number'?v.toFixed(3)+' A':v}${activeStr}`;
+            },
+            footer: () => {
+              const d = String(g(row,I.DATA)||'').trim();
+              const h = String(g(row,I.HORA)||'').trim();
+              const lines = [];
+              if (d) lines.push('Data: ' + d);
+              if (h) lines.push('Hora: ' + h);
+              lines.push(`Amostras ativas: ${vsAtivo.length}/100 (≥${LIMIAR_ATIVO}A)`);
+              return lines;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: ctx => { const lbl = labels[ctx.index]??''; if(lbl.startsWith('M'))return chartColors.amb; if(lbl.startsWith('D'))return chartColors.grn; return'#8c93a3'; },
+            font: {family:'Inter',size:8}, maxTicksLimit:32, maxRotation:0
+          },
+          grid: {
+            color: ctx => { const lbl=labels[ctx.index]??''; return(lbl==='M1.1'||lbl==='D1')?'#cdd1d9':'#e2e5ea'; },
+            lineWidth: ctx => { const lbl=labels[ctx.index]??''; return(lbl==='M1.1'||lbl==='D1')?2:1; }
+          },
+          border: {display:false}
+        },
+        y: { ticks:{color:'#8c93a3',font:{family:'Inter',size:9}}, grid:{color:'#e2e5ea'}, border:{display:false} }
+      }
+    }
+  });
+
+  const dtS = idx>0 ? num(row,I.T_SUB)-num(DATA[idx-1],I.T_SUB) : num(row,I.T_SUB);
+  const dtD = idx>0 ? num(row,I.T_DES)-num(DATA[idx-1],I.T_DES) : num(row,I.T_DES);
+  document.getElementById('perfilStats').innerHTML = `
+    <div class="kpi"><div class="kpi-lbl">Média Subindo★</div><div class="kpi-val">${f(mS,3)}<span class="kpi-unit">A</span></div><div class="kpi-sub">${vsAtivo.length}/100 amostras ativas</div></div>
     <div class="kpi"><div class="kpi-lbl">Pico Subindo</div><div class="kpi-val">${f(pS,3)}<span class="kpi-unit">A</span></div><div class="kpi-sub">valor máximo</div></div>
     <div class="kpi"><div class="kpi-lbl">Média Pausa</div><div class="kpi-val">${f(mPausa,3)}<span class="kpi-unit">A</span></div><div class="kpi-sub">50 amostras · 5 min</div></div>
     <div class="kpi"><div class="kpi-lbl">Pico Pausa</div><div class="kpi-val">${f(pP,3)}<span class="kpi-unit">A</span></div><div class="kpi-sub">maior leitura</div></div>
@@ -550,139 +830,281 @@ function renderPerfil(){
     <div class="kpi"><div class="kpi-lbl">Duração Descendo</div><div class="kpi-val">${f(dtD,2)}<span class="kpi-unit">s</span></div><div class="kpi-sub">neste ciclo</div></div>`;
 }
 
-function renderPausa(){
-  const idx=parseInt(document.getElementById('selPausa').value);
-  const row=DATA[idx];if(!row)return;
-  const cx=num(row,I.CICLOS)??idx+1;
-  document.getElementById('pausaTitle').textContent=`Ciclo ${cx} — Pausa Fim de Curso`;
-  const labels=[],datasets=[];
-  const minNames=['MIN 1','MIN 2','MIN 3','MIN 4','MIN 5'];
-  for(let m=1;m<=5;m++)for(let s=1;s<=10;s++)labels.push(`M${m}.${s}`);
-  for(let m=1;m<=5;m++){
-    const vm=getMin(row,m),base=(m-1)*10,arr=new Array(50).fill(null);
-    vm.forEach((v,i)=>{arr[base+i]=v;});
-    datasets.push({label:minNames[m-1],data:arr,borderColor:minColors[m-1],backgroundColor:minColors[m-1]+'20',tension:.3,pointRadius:3,borderWidth:1.8,fill:false,spanGaps:false});
-    if(vm.length){const avgV=avg(vm);const arrAvg=new Array(50).fill(null);vm.forEach((_,i)=>{arrAvg[base+i]=avgV;});datasets.push({label:`Média M${m}: ${f(avgV,3)}A`,data:arrAvg,borderColor:minColors[m-1]+'55',borderDash:[4,4],pointRadius:0,borderWidth:1,fill:false,spanGaps:false});}
+// ════════════════════════════════
+// PAUSA 5 MIN
+// ════════════════════════════════
+function renderPausa() {
+  const idx = parseInt(document.getElementById('selPausa').value);
+  const row = DATA[idx]; if (!row) return;
+  const cx = num(row, I.CICLOS) ?? idx+1;
+  document.getElementById('pausaTitle').textContent = `Ciclo ${cx} — Pausa Fim de Curso`;
+
+  const labels = [];
+  const datasets = [];
+  const minNames = ['MIN 1','MIN 2','MIN 3','MIN 4','MIN 5'];
+  for (let m = 1; m <= 5; m++) for (let s = 1; s <= 10; s++) labels.push(`M${m}.${s}`);
+  for (let m = 1; m <= 5; m++) {
+    const vm = getMin(row, m);
+    const base = (m-1)*10;
+    const arr = new Array(50).fill(null);
+    vm.forEach((v,i) => { arr[base+i] = v; });
+    datasets.push({ label:minNames[m-1], data:arr, borderColor:minColors[m-1], backgroundColor:minColors[m-1]+'20', tension:.3, pointRadius:3, borderWidth:1.8, fill:false, spanGaps:false });
+    if (vm.length) {
+      const avgV = avg(vm);
+      const arrAvg = new Array(50).fill(null);
+      vm.forEach((_,i) => { arrAvg[base+i] = avgV; });
+      datasets.push({ label:`Média M${m}: ${f(avgV,3)}A`, data:arrAvg, borderColor:minColors[m-1]+'55', borderDash:[4,4], pointRadius:0, borderWidth:1, fill:false, spanGaps:false });
+    }
   }
+
   dc('cPausa');
-  CH.cPausa=new Chart(document.getElementById('cPausa'),{type:'line',data:{labels,datasets},options:CO()});
-  const minLabels=['MIN 1','MIN 2','MIN 3','MIN 4','MIN 5'],minClasses=['min1','min2','min3','min4','min5'];
-  document.getElementById('pausaStats').innerHTML=minLabels.map((mn,i)=>{
-    const vm=getMin(row,i+1),a=vm.length?avg(vm):null,p=vm.length?Math.max(...vm):null,mn2=vm.length?Math.min(...vm):null;
-    return`<div class="pausa-slot"><div class="pausa-slot-title ${minClasses[i]}">${mn}</div><div class="kpi-lbl" style="margin-top:8px">Média</div><div style="font-family:var(--mono);font-size:18px;font-weight:600;color:var(--txt)">${f(a,3)} <span style="font-size:10px;color:var(--txt3)">A</span></div><div class="kpi-lbl" style="margin-top:6px">Pico / Mín</div><div style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${f(p,3)} / ${f(mn2,3)} A</div><div class="kpi-sub" style="margin-top:4px">${vm.length} amostras</div></div>`;
+  CH.cPausa = new Chart(document.getElementById('cPausa'), { type:'line', data:{labels, datasets}, options:CO() });
+
+  const minLabels = ['MIN 1','MIN 2','MIN 3','MIN 4','MIN 5'];
+  const minClasses = ['min1','min2','min3','min4','min5'];
+  document.getElementById('pausaStats').innerHTML = minLabels.map((mn,i) => {
+    const vm = getMin(row, i+1);
+    const a = vm.length ? avg(vm) : null;
+    const p = vm.length ? Math.max(...vm) : null;
+    const mn2 = vm.length ? Math.min(...vm) : null;
+    return `<div class="pausa-slot">
+      <div class="pausa-slot-title ${minClasses[i]}">${mn}</div>
+      <div class="kpi-lbl" style="margin-top:8px">Média</div>
+      <div style="font-family:var(--mono);font-size:18px;font-weight:600;color:var(--txt)">${f(a,3)} <span style="font-size:10px;color:var(--txt3)">A</span></div>
+      <div class="kpi-lbl" style="margin-top:6px">Pico / Mín</div>
+      <div style="font-family:var(--mono);font-size:11px;color:var(--txt2)">${f(p,3)} / ${f(mn2,3)} A</div>
+      <div class="kpi-sub" style="margin-top:4px">${vm.length} amostras</div>
+    </div>`;
   }).join('');
 }
 
-function renderPausaTendencia(){
-  const valid=DATA.filter(r=>r._pausaAvg.some(v=>v!==null));if(!valid.length)return;
-  const lb=valid.map(r=>num(r,I.CICLOS)??'');
-  const minNames=['MIN 1','MIN 2','MIN 3','MIN 4','MIN 5'];
+// ════════════════════════════════
+// PAUSA TENDÊNCIA
+// ════════════════════════════════
+function renderPausaTendencia() {
+  const valid = DATA.filter(r => r._pausaAvg.some(v => v !== null));
+  if (!valid.length) return;
+  const lb = valid.map(r => num(r,I.CICLOS) ?? '');
+  const minNames = ['MIN 1','MIN 2','MIN 3','MIN 4','MIN 5'];
+
   dc('cPausaTend');
-  CH.cPausaTend=new Chart(document.getElementById('cPausaTend'),{type:'line',data:{labels:lb,datasets:[...minNames.map((mn,i)=>({label:mn,data:valid.map(r=>r._pausaAvg[i]),borderColor:minColors[i],backgroundColor:minColors[i]+'15',tension:.3,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:minColors[i],borderWidth:1.5,fill:false,spanGaps:true})),...buchaBandsDatasets(valid)]},options:COT(valid)});
+  CH.cPausaTend = new Chart(document.getElementById('cPausaTend'), {
+    type:'line',
+    data:{ labels:lb, datasets: minNames.map((mn,i) => ({ label:mn, data:valid.map(r=>r._pausaAvg[i]), borderColor:minColors[i], backgroundColor:minColors[i]+'15', tension:.3, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:minColors[i], borderWidth:1.5, fill:false, spanGaps:true })) },
+    options: COT(valid)
+  });
+
   dc('cPausaPico');
-  CH.cPausaPico=new Chart(document.getElementById('cPausaPico'),{type:'line',data:{labels:lb,datasets:[{label:'Pico pausa (A)',data:valid.map(r=>r._pausaGlobal),borderColor:chartColors.red,backgroundColor:chartColors.red+'15',tension:.3,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:chartColors.red,borderWidth:1.5,fill:true},...buchaBandsDatasets(valid)]},options:COT(valid)});
+  CH.cPausaPico = new Chart(document.getElementById('cPausaPico'), {
+    type:'line',
+    data:{ labels:lb, datasets:[{ label:'Pico pausa (A)', data:valid.map(r=>r._pausaGlobal), borderColor:chartColors.red, backgroundColor:chartColors.red+'15', tension:.3, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.red, borderWidth:1.5, fill:true }] },
+    options: COT(valid)
+  });
+
   dc('cPausaMinutos');
-  const trendData=[];for(let m=0;m<5;m++)trendData.push(linReg(valid.map(r=>r._pausaAvg[m])));
-  CH.cPausaMinutos=new Chart(document.getElementById('cPausaMinutos'),{type:'line',data:{labels:lb,datasets:[...minNames.map((mn,i)=>({label:mn,data:valid.map(r=>r._pausaAvg[i]),borderColor:minColors[i],tension:.3,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:minColors[i],borderWidth:1.5,fill:false})),...minNames.map((mn,i)=>({label:`Tend ${mn}`,data:trendData[i],borderColor:minColors[i]+'55',borderDash:[5,4],pointRadius:0,pointHoverRadius:0,borderWidth:1,fill:false})),...buchaBandsDatasets(valid)]},options:COT(valid)});
+  const trendData = [];
+  for (let m = 0; m < 5; m++) trendData.push(linReg(valid.map(r => r._pausaAvg[m])));
+  CH.cPausaMinutos = new Chart(document.getElementById('cPausaMinutos'), {
+    type:'line',
+    data:{ labels:lb, datasets:[
+      ...minNames.map((mn,i) => ({ label:mn, data:valid.map(r=>r._pausaAvg[i]), borderColor:minColors[i], tension:.3, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:minColors[i], borderWidth:1.5, fill:false })),
+      ...minNames.map((mn,i) => ({ label:`Tend ${mn}`, data:trendData[i], borderColor:minColors[i]+'55', borderDash:[5,4], pointRadius:0, pointHoverRadius:0, borderWidth:1, fill:false }))
+    ]},
+    options: COT(valid)
+  });
 }
 
-function linReg(ys){
-  const clean=ys.map((v,i)=>({v,i})).filter(({v})=>v!==null);if(!clean.length)return ys.map(()=>null);
-  const mx=avg(clean.map(({i})=>i)),my=avg(clean.map(({v})=>v));
-  const b=clean.reduce((s,{v,i})=>s+(i-mx)*(v-my),0)/(clean.reduce((s,{i})=>s+(i-mx)**2,0)||1);
-  return ys.map((_,i)=>+(my+b*(i-mx)).toFixed(4));
+// ════════════════════════════════
+// TENDÊNCIA
+// ════════════════════════════════
+function linReg(ys) {
+  const clean = ys.map((v,i)=>({v,i})).filter(({v})=>v!==null);
+  if (!clean.length) return ys.map(()=>null);
+  const mx = avg(clean.map(({i})=>i)), my = avg(clean.map(({v})=>v));
+  const b = clean.reduce((s,{v,i})=>s+(i-mx)*(v-my),0) / (clean.reduce((s,{i})=>s+(i-mx)**2,0)||1);
+  return ys.map((_,i)=> +(my+b*(i-mx)).toFixed(4));
 }
 
-function renderTendencia(){
-  const val=DATA.filter(r=>r._mS!==null);if(!val.length)return;
-  const lb=val.map(r=>num(r,I.CICLOS)??'');
-  const aS=val.map(r=>r._mS),mS=avg(aS),dS=Math.sqrt(avg(aS.map(v=>(v-mS)**2))),lS=mS+2*dS;
-  renderBuchaBanner('buchaBannerTend');
+function renderTendencia() {
+  const val = DATA.filter(r => r._mS !== null);
+  if (!val.length) return;
+  const lb = val.map(r => num(r,I.CICLOS) ?? '');
+  const aS = val.map(r => r._mS);
+  const mS = avg(aS), dS = Math.sqrt(avg(aS.map(v=>(v-mS)**2)));
+  const lS = mS + 2*dS;
+
   dc('cTendSub');
-  CH.cTendSub=new Chart(document.getElementById('cTendSub'),{type:'line',data:{labels:lb,datasets:[{label:'Média Subindo ativa (A)',data:aS,borderColor:chartColors.blu,backgroundColor:chartColors.blu+'15',tension:.3,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:chartColors.blu,borderWidth:1.5,fill:true},{label:'Tendência',data:linReg(aS),borderColor:chartColors.red,borderDash:[5,4],pointRadius:0,pointHoverRadius:0,borderWidth:1.5,fill:false},...buchaBandsDatasets(val)]},options:COT(val)});
-  const aD=val.map(r=>r._mD);
+  CH.cTendSub = new Chart(document.getElementById('cTendSub'), {
+    type:'line',
+    data:{ labels:lb, datasets:[
+      { label:'Média Subindo ativa (A)', data:aS, borderColor:chartColors.blu, backgroundColor:chartColors.blu+'15', tension:.3, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.blu, borderWidth:1.5, fill:true },
+      { label:'Tendência', data:linReg(aS), borderColor:chartColors.red, borderDash:[5,4], pointRadius:0, pointHoverRadius:0, borderWidth:1.5, fill:false }
+    ]},
+    options: COT(val)
+  });
+
+  const aD = val.map(r => r._mD);
   dc('cTendDes');
-  CH.cTendDes=new Chart(document.getElementById('cTendDes'),{type:'line',data:{labels:lb,datasets:[{label:'Média Descendo (A)',data:aD,borderColor:chartColors.grn,backgroundColor:chartColors.grn+'15',tension:.3,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:chartColors.grn,borderWidth:1.5,fill:true},{label:'Tendência',data:linReg(aD),borderColor:chartColors.red,borderDash:[5,4],pointRadius:0,pointHoverRadius:0,borderWidth:1.5,fill:false},...buchaBandsDatasets(val)]},options:COT(val)});
+  CH.cTendDes = new Chart(document.getElementById('cTendDes'), {
+    type:'line',
+    data:{ labels:lb, datasets:[
+      { label:'Média Descendo (A)', data:aD, borderColor:chartColors.grn, backgroundColor:chartColors.grn+'15', tension:.3, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.grn, borderWidth:1.5, fill:true },
+      { label:'Tendência', data:linReg(aD), borderColor:chartColors.red, borderDash:[5,4], pointRadius:0, pointHoverRadius:0, borderWidth:1.5, fill:false }
+    ]},
+    options: COT(val)
+  });
+
   dc('cPico');
-  CH.cPico=new Chart(document.getElementById('cPico'),{type:'line',data:{labels:lb,datasets:[{label:'Pico ↑ (A)',data:val.map(r=>r._pS),borderColor:chartColors.blu,tension:.3,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:chartColors.blu,borderWidth:1.5,fill:false},{label:'Pico ↓ (A)',data:val.map(r=>r._pD),borderColor:chartColors.grn,tension:.3,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:chartColors.grn,borderWidth:1.5,fill:false},{label:`Threshold ±2σ (${f(lS,3)}A)`,data:val.map(()=>lS),borderColor:chartColors.red+'60',borderDash:[4,4],pointRadius:0,pointHoverRadius:0,borderWidth:1},...buchaBandsDatasets(val)]},options:COT(val)});
+  CH.cPico = new Chart(document.getElementById('cPico'), {
+    type:'line',
+    data:{ labels:lb, datasets:[
+      { label:'Pico ↑ (A)', data:val.map(r=>r._pS), borderColor:chartColors.blu, tension:.3, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.blu, borderWidth:1.5, fill:false },
+      { label:'Pico ↓ (A)', data:val.map(r=>r._pD), borderColor:chartColors.grn, tension:.3, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.grn, borderWidth:1.5, fill:false },
+      { label:`Threshold ±2σ (${f(lS,3)}A)`, data:val.map(()=>lS), borderColor:chartColors.red+'60', borderDash:[4,4], pointRadius:0, pointHoverRadius:0, borderWidth:1 }
+    ]},
+    options: COT(val)
+  });
 }
 
-function renderComparador(){
-  const ia=parseInt(document.getElementById('cmpA').value);
-  const ib=parseInt(document.getElementById('cmpB').value);
-  const icStr=document.getElementById('cmpC').value;
-  const ic=icStr!==''?parseInt(icStr):null;
-  const indices=[ia,ib,...(ic!==null&&DATA[ic]?[ic]:[])];
-  const rows=indices.map(i=>DATA[i]).filter(Boolean);if(rows.length<2)return;
-  const CL=[chartColors.blu,chartColors.grn,chartColors.amb];
-  const lblS=Array.from({length:100},(_,i)=>`S${i+1}`);
-  const lblP=[];for(let m=1;m<=5;m++)for(let s=1;s<=10;s++)lblP.push(`M${m}.${s}`);
-  const lblD=Array.from({length:10},(_,i)=>`D${i+1}`);
-  const lblFull=[...lblS,...lblP,...lblD];
-  const mk=(data,color,label)=>({label,data,borderColor:color,backgroundColor:color+'18',tension:.3,pointRadius:2,pointHoverRadius:5,pointBackgroundColor:color,borderWidth:1.8,fill:false});
-  function mkCmpTooltip(rowsArr){return{backgroundColor:'#ffffff',borderColor:'#cdd1d9',borderWidth:1,titleColor:'#1a1d23',bodyColor:'#4b5263',footerColor:'#8c93a3',titleFont:{family:'Inter',size:11,weight:'600'},bodyFont:{family:'Inter',size:10},footerFont:{family:'Inter',size:9},padding:12,boxPadding:4,callbacks:{title:items=>{const lbl=items[0].label;if(lbl.startsWith('S'))return`Subida — Amostra ${lbl}`;if(lbl.startsWith('M'))return`Pausa — ${lbl.replace('.',' Amostra ')}`;if(lbl.startsWith('D'))return`Descida — Amostra ${lbl}`;return lbl;},label:ctx=>{const v=ctx.parsed.y;return v!==null?` ${ctx.dataset.label}: ${typeof v==='number'?v.toFixed(3)+' A':v}`:null;},footer:items=>{const seen=new Set();const lines=[];items.forEach(item=>{const row=rowsArr[item.datasetIndex];if(!row)return;const key=num(row,I.CICLOS)??item.datasetIndex;if(seen.has(key))return;seen.add(key);const d=String(g(row,I.DATA)||'').trim();const h=String(g(row,I.HORA)||'').trim();lines.push(`Ciclo ${key}: ${d} ${h}`.trim());});return lines;}}};}
+// ════════════════════════════════
+// COMPARADOR
+// ════════════════════════════════
+function renderComparador() {
+  const ia = parseInt(document.getElementById('cmpA').value);
+  const ib = parseInt(document.getElementById('cmpB').value);
+  const icStr = document.getElementById('cmpC').value;
+  const ic = icStr !== '' ? parseInt(icStr) : null;
+  const indices = [ia, ib, ...(ic !== null && DATA[ic] ? [ic] : [])];
+  const rows = indices.map(i => DATA[i]).filter(Boolean);
+  if (rows.length < 2) return;
+
+  const CL = [chartColors.blu, chartColors.grn, chartColors.amb];
+  const lblS = Array.from({length:100}, (_,i) => `S${i+1}`);
+  const lblP = []; for(let m=1;m<=5;m++) for(let s=1;s<=10;s++) lblP.push(`M${m}.${s}`);
+  const lblD = Array.from({length:10}, (_,i) => `D${i+1}`);
+  const lblFull = [...lblS, ...lblP, ...lblD];
+
+  const mk = (data, color, label) => ({ label, data, borderColor:color, backgroundColor:color+'18', tension:.3, pointRadius:2, pointHoverRadius:5, pointBackgroundColor:color, borderWidth:1.8, fill:false });
+
+  function mkCmpTooltip(rowsArr) {
+    return {
+      backgroundColor:'#ffffff', borderColor:'#cdd1d9', borderWidth:1,
+      titleColor:'#1a1d23', bodyColor:'#4b5263', footerColor:'#8c93a3',
+      titleFont:{family:'Inter',size:11,weight:'600'}, bodyFont:{family:'Inter',size:10}, footerFont:{family:'Inter',size:9},
+      padding:12, boxPadding:4,
+      callbacks:{
+        title: items => { const lbl=items[0].label; if(lbl.startsWith('S'))return`Subida — Amostra ${lbl}`; if(lbl.startsWith('M'))return`Pausa — ${lbl.replace('.',' Amostra ')}`; if(lbl.startsWith('D'))return`Descida — Amostra ${lbl}`; return lbl; },
+        label: ctx => { const v=ctx.parsed.y; return v!==null?` ${ctx.dataset.label}: ${typeof v==='number'?v.toFixed(3)+' A':v}`:null; },
+        footer: items => { const seen=new Set(),lines=[]; items.forEach(item=>{const row=rowsArr[item.datasetIndex];if(!row)return;const key=num(row,I.CICLOS)??item.datasetIndex;if(seen.has(key))return;seen.add(key);const d=String(g(row,I.DATA)||'').trim();const h=String(g(row,I.HORA)||'').trim();lines.push(`Ciclo ${key}: ${d} ${h}`.trim());}); return lines; }
+      }
+    };
+  }
+
   dc('cCmpCompleto');
-  CH.cCmpCompleto=new Chart(document.getElementById('cCmpCompleto'),{type:'line',data:{labels:lblFull,datasets:rows.map((r,i)=>{const vS=getSub(r),vP=getAllPausa(r),vD=getDes(r);const data=[...vS,...vP,...vD].map((v,j)=>j<vS.length+vP.length+vD.length?v:null);return mk(data,CL[i],`Ciclo ${num(r,I.CICLOS)??indices[i]+1}`);})},options:{...CO(),plugins:{...CO().plugins,tooltip:mkCmpTooltip(rows)},scales:{x:{ticks:{color:ctx=>{const lbl=lblFull[ctx.index]??'';if(lbl.startsWith('M'))return chartColors.amb;if(lbl.startsWith('D'))return chartColors.grn;return'#8c93a3';},font:{family:'Inter',size:8},maxTicksLimit:32,maxRotation:0},grid:{color:ctx=>{const lbl=lblFull[ctx.index]??'';return(lbl==='M1.1'||lbl==='D1')?'#cdd1d9':'#e2e5ea';},lineWidth:ctx=>{const lbl=lblFull[ctx.index]??'';return(lbl==='M1.1'||lbl==='D1')?2:1;}},border:{display:false}},y:{ticks:{color:'#8c93a3',font:{family:'Inter',size:9}},grid:{color:'#e2e5ea'},border:{display:false}}}}});
+  CH.cCmpCompleto = new Chart(document.getElementById('cCmpCompleto'), {
+    type:'line',
+    data:{ labels:lblFull, datasets:rows.map((r,i) => { const vS=getSub(r),vP=getAllPausa(r),vD=getDes(r); return mk([...vS,...vP,...vD],CL[i],`Ciclo ${num(r,I.CICLOS)??indices[i]+1}`); }) },
+    options:{ ...CO(), plugins:{...CO().plugins,tooltip:mkCmpTooltip(rows)}, scales:{x:{ticks:{color:ctx=>{const lbl=lblFull[ctx.index]??'';if(lbl.startsWith('M'))return chartColors.amb;if(lbl.startsWith('D'))return chartColors.grn;return'#8c93a3';},font:{family:'Inter',size:8},maxTicksLimit:32,maxRotation:0},grid:{color:ctx=>{const lbl=lblFull[ctx.index]??'';return(lbl==='M1.1'||lbl==='D1')?'#cdd1d9':'#e2e5ea';},lineWidth:ctx=>{const lbl=lblFull[ctx.index]??'';return(lbl==='M1.1'||lbl==='D1')?2:1;}},border:{display:false}},y:{ticks:{color:'#8c93a3',font:{family:'Inter',size:9}},grid:{color:'#e2e5ea'},border:{display:false}}} }
+  });
+
   dc('cCmpSub');
-  CH.cCmpSub=new Chart(document.getElementById('cCmpSub'),{type:'line',data:{labels:lblS,datasets:rows.map((r,i)=>mk(getSub(r),CL[i],`Ciclo ${num(r,I.CICLOS)??indices[i]+1} ↑`))},options:{...CO(),plugins:{...CO().plugins,tooltip:mkCmpTooltip(rows)}}});
+  CH.cCmpSub = new Chart(document.getElementById('cCmpSub'), { type:'line', data:{labels:lblS, datasets:rows.map((r,i)=>mk(getSub(r),CL[i],`Ciclo ${num(r,I.CICLOS)??indices[i]+1} ↑`))}, options:{...CO(),plugins:{...CO().plugins,tooltip:mkCmpTooltip(rows)}} });
+
   dc('cCmpPausa');
-  CH.cCmpPausa=new Chart(document.getElementById('cCmpPausa'),{type:'line',data:{labels:lblP,datasets:rows.map((r,i)=>mk(getAllPausa(r),CL[i],`Ciclo ${num(r,I.CICLOS)??indices[i]+1} ⏸`))},options:{...CO(),plugins:{...CO().plugins,tooltip:mkCmpTooltip(rows)}}});
+  CH.cCmpPausa = new Chart(document.getElementById('cCmpPausa'), { type:'line', data:{labels:lblP, datasets:rows.map((r,i)=>mk(getAllPausa(r),CL[i],`Ciclo ${num(r,I.CICLOS)??indices[i]+1} ⏸`))}, options:{...CO(),plugins:{...CO().plugins,tooltip:mkCmpTooltip(rows)}} });
+
   dc('cCmpDes');
-  CH.cCmpDes=new Chart(document.getElementById('cCmpDes'),{type:'line',data:{labels:lblD,datasets:rows.map((r,i)=>mk(getDes(r),CL[i],`Ciclo ${num(r,I.CICLOS)??indices[i]+1} ↓`))},options:{...CO(),plugins:{...CO().plugins,tooltip:mkCmpTooltip(rows)}}});
+  CH.cCmpDes = new Chart(document.getElementById('cCmpDes'), { type:'line', data:{labels:lblD, datasets:rows.map((r,i)=>mk(getDes(r),CL[i],`Ciclo ${num(r,I.CICLOS)??indices[i]+1} ↓`))}, options:{...CO(),plugins:{...CO().plugins,tooltip:mkCmpTooltip(rows)}} });
 }
 
-function mediana(arr){const s=[...arr].filter(v=>v!==null).sort((a,b)=>a-b);if(!s.length)return null;const m=Math.floor(s.length/2);return s.length%2?s[m]:(s[m-1]+s[m])/2;}
-function deltas(colIdx){
-  const raw=DATA.map((r,i)=>{if(i===0)return null;const cur=num(r,colIdx),prev=num(DATA[i-1],colIdx);if(cur===null||prev===null)return null;const d=cur-prev;return d>=0?+d.toFixed(3):null;});
-  const med=mediana(raw);if(!med)return raw;
-  return raw.map(v=>v!==null&&v>med*1.6?null:v);
+// ════════════════════════════════
+// TEMPO
+// ════════════════════════════════
+function mediana(arr) {
+  const s = [...arr].filter(v=>v!==null).sort((a,b)=>a-b);
+  if (!s.length) return null;
+  const m = Math.floor(s.length/2);
+  return s.length%2 ? s[m] : (s[m-1]+s[m])/2;
+}
+function deltas(colIdx) {
+  const raw = DATA.map((r,i) => {
+    if (i===0) return null;
+    const cur=num(r,colIdx), prev=num(DATA[i-1],colIdx);
+    if (cur===null||prev===null) return null;
+    const d=cur-prev; return d>=0 ? +d.toFixed(3) : null;
+  });
+  const med = mediana(raw); if (!med) return raw;
+  return raw.map(v => v!==null && v>med*1.6 ? null : v);
 }
 
-function renderTempo(){
-  const lb=DATA.map(r=>num(r,I.CICLOS)??'');
-  const mkTempoOpts=(labelUnit)=>COT(DATA,{plugins:{tooltip:{callbacks:{title:items=>{const row=DATA[items[0].dataIndex];return row?`Ciclo ${num(row,I.CICLOS)??items[0].label}`:`Ciclo ${items[0].label}`;},label:ctx=>{const v=ctx.parsed.y;return v!==null?` ${ctx.dataset.label}: ${typeof v==='number'?v.toFixed(2)+' s':v}`:null;},footer:items=>{const row=DATA[items[0].dataIndex];if(!row)return[];const d=String(g(row,I.DATA)||'').trim();const h=String(g(row,I.HORA)||'').trim();const lines=[];if(d)lines.push('Data: '+d);if(h)lines.push('Hora: '+h);return lines;}}}}});
+function renderTempo() {
+  const lb = DATA.map(r => num(r,I.CICLOS) ?? '');
+  const tempoTooltip = items => {
+    const row = DATA[items[0].dataIndex];
+    return row ? `Ciclo ${num(row,I.CICLOS) ?? items[0].label}` : `Ciclo ${items[0].label}`;
+  };
+  const tempoLabel = ctx => { const v=ctx.parsed.y; return v!==null?` ${ctx.dataset.label}: ${typeof v==='number'?v.toFixed(2)+' s':v}`:null; };
+  const tempoFooter = items => { const row=DATA[items[0].dataIndex];if(!row)return[];const d=String(g(row,I.DATA)||'').trim();const h=String(g(row,I.HORA)||'').trim();const lines=[];if(d)lines.push('Data: '+d);if(h)lines.push('Hora: '+h);return lines; };
+
   dc('cTempoSD');
-  CH.cTempoSD=new Chart(document.getElementById('cTempoSD'),{type:'line',data:{labels:lb,datasets:[{label:'Subida (s)',data:deltas(I.T_SUB),borderColor:chartColors.blu,backgroundColor:chartColors.blu+'15',tension:.5,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:chartColors.blu,borderWidth:1.5,fill:true,spanGaps:false},{label:'Descida (s)',data:deltas(I.T_DES),borderColor:chartColors.grn,backgroundColor:chartColors.grn+'15',tension:.5,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:chartColors.grn,borderWidth:1.5,fill:true,spanGaps:false}]},options:mkTempoOpts()});
+  CH.cTempoSD = new Chart(document.getElementById('cTempoSD'), {
+    type:'line',
+    data:{ labels:lb, datasets:[
+      { label:'Subida (s)',  data:deltas(I.T_SUB), borderColor:chartColors.blu, backgroundColor:chartColors.blu+'15', tension:.5, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.blu, borderWidth:1.5, fill:true, spanGaps:false },
+      { label:'Descida (s)', data:deltas(I.T_DES), borderColor:chartColors.grn, backgroundColor:chartColors.grn+'15', tension:.5, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.grn, borderWidth:1.5, fill:true, spanGaps:false }
+    ]},
+    options: COT(DATA, { plugins:{ tooltip:{ callbacks:{ title:tempoTooltip, label:tempoLabel, footer:tempoFooter } } } })
+  });
+
   dc('cTempoAtivo');
-  CH.cTempoAtivo=new Chart(document.getElementById('cTempoAtivo'),{type:'line',data:{labels:lb,datasets:[{label:'Motor Ativo (s)',data:deltas(I.T_ATIVO),borderColor:chartColors.pur,backgroundColor:chartColors.pur+'15',tension:.5,pointRadius:3,pointHoverRadius:6,pointBackgroundColor:chartColors.pur,borderWidth:1.5,fill:true,spanGaps:false}]},options:mkTempoOpts()});
-  const last=DATA[DATA.length-1];
-  document.getElementById('infoTotal').innerHTML=`<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8c93a3" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 4v4l3 2"/></svg>Tempo total de teste: <strong>${fmtHora(num(last,I.T_TOTAL))}</strong> &nbsp;·&nbsp; Subindo acumulado: <strong>${fmtMin(num(last,I.T_SUB))}</strong> &nbsp;·&nbsp; Descendo acumulado: <strong>${fmtMin(num(last,I.T_DES))}</strong> &nbsp;·&nbsp; Motor ativo acumulado: <strong>${fmtMin(num(last,I.T_ATIVO))}</strong>`;
+  CH.cTempoAtivo = new Chart(document.getElementById('cTempoAtivo'), {
+    type:'line',
+    data:{ labels:lb, datasets:[
+      { label:'Motor Ativo (s)', data:deltas(I.T_ATIVO), borderColor:chartColors.pur, backgroundColor:chartColors.pur+'15', tension:.5, pointRadius:3, pointHoverRadius:6, pointBackgroundColor:chartColors.pur, borderWidth:1.5, fill:true, spanGaps:false }
+    ]},
+    options: COT(DATA, { plugins:{ tooltip:{ callbacks:{ title:tempoTooltip, label:tempoLabel, footer:tempoFooter } } } })
+  });
+
+  const last = DATA[DATA.length-1];
+  document.getElementById('infoTotal').innerHTML = `
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8c93a3" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 4v4l3 2"/></svg>
+    Tempo total de teste: <strong>${fmtHora(num(last,I.T_TOTAL))}</strong>
+    &nbsp;·&nbsp; Subindo acumulado: <strong>${fmtMin(num(last,I.T_SUB))}</strong>
+    &nbsp;·&nbsp; Descendo acumulado: <strong>${fmtMin(num(last,I.T_DES))}</strong>
+    &nbsp;·&nbsp; Motor ativo acumulado: <strong>${fmtMin(num(last,I.T_ATIVO))}</strong>`;
 }
 
-// ── LOAD — auto-refresh: 120 segundos ──
-async function loadData(){
-  const btn=document.getElementById('btnR');
-  btn.disabled=true;btn.classList.add('spin');
-  document.getElementById('lu').textContent='atualizando...';
+// ════════════════════════════════
+// LOAD — auto-refresh: 120s
+// ════════════════════════════════
+async function loadData() {
+  const btn = document.getElementById('btnR');
+  btn.disabled = true; btn.classList.add('spin');
+  document.getElementById('lu').textContent = 'atualizando...';
   clearTimeout(TM);
-  try{
-    const res=await fetch(CSV+'&t='+Date.now());
-    if(!res.ok)throw new Error(`HTTP ${res.status}`);
-    const parsed=parseCSV(await res.text());
-    if(!parsed.length)throw new Error('sem dados');
-    DATA=parsed;
-    enrich(DATA);
-    detectBuchaChanges();
-    populateSelects();
-    renderResumo();
-    renderPerfil();
-    const at=document.querySelector('.tab.active')?.textContent?.trim();
-    if(at==='TENDÊNCIA')renderTendencia();
-    if(at==='TEMPO DE CICLO')renderTempo();
-    if(at==='COMPARADOR')renderComparador();
-    if(at==='PAUSA 5 MIN'){renderPausa();renderPausaTendencia();}
-    const now=new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
-    document.getElementById('lu').textContent=now;
-    const last=DATA[DATA.length-1];
-    const buchaInfo=BUCHA_CHANGES.length?` · ${BUCHA_CHANGES.length} troca(s) de bucha`:'';
-    document.getElementById('ft').textContent=`Olsen Eletrônica · analise_motor_com_pausa · ${num(last,I.CICLOS)??'?'} ciclos${buchaInfo} · ${now} · auto-refresh 120s`;
-  }catch(e){
-    document.getElementById('kpiGrid').innerHTML=`<div class="sbox"><span>erro: ${e.message}</span></div>`;
-    document.getElementById('lu').textContent='erro';
+  try {
+    const res = await fetch(CSV + '&t=' + Date.now());
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const parsed = parseCSV(await res.text());
+    if (!parsed.length) throw new Error('sem dados');
+    DATA = parsed; enrich(DATA); populateSelects();
+    renderResumo(); renderPerfil();
+    const at = document.querySelector('.tab.active')?.textContent?.trim();
+    if (at === 'TENDÊNCIA') renderTendencia();
+    if (at === 'TEMPO DE CICLO') renderTempo();
+    if (at === 'COMPARADOR') renderComparador();
+    if (at === 'PAUSA 5 MIN') { renderPausa(); renderPausaTendencia(); }
+    const now = new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    document.getElementById('lu').textContent = now;
+    const last = DATA[DATA.length-1];
+    document.getElementById('ft').textContent = `Olsen Eletrônica · analise_motor_com_pausa · ${num(last,I.CICLOS)??'?'} ciclos · ${now} · auto-refresh 120s`;
+  } catch(e) {
+    document.getElementById('kpiGrid').innerHTML = `<div class="sbox"><span>erro: ${e.message}</span></div>`;
+    document.getElementById('lu').textContent = 'erro';
     console.error(e);
-  }finally{
-    btn.disabled=false;btn.classList.remove('spin');
-    TM=setTimeout(loadData,120000); // ← 120 segundos
+  } finally {
+    btn.disabled = false; btn.classList.remove('spin');
+    TM = setTimeout(loadData, 120000);
   }
 }
 loadData();
